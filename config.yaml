@@ -1,0 +1,90 @@
+    # Project definitions (do not edit)
+Task: MultipleMarkers
+scorer: Raghav
+date: Nov15
+multianimalproject:
+
+    # Project path (change when moving around)
+project_path: .
+
+    # Annotation data set configuration (and individual video cropping parameters)
+video_sets:
+  /home/raghav/dsl/projects/locomotion/tracking/compress/98_20cms_0degUP_first_P63.avi:
+    crop: 0, 658, 0, 304
+  /home/raghav/dsl/projects/locomotion/tracking/compress/95_20cms_0degUP_first_P56.avi:
+    crop: 0, 658, 0, 292
+  /home/raghav/dsl/projects/locomotion/tracking/compress/92_20cms_0degUP_first_P56.avi:
+    crop: 0, 658, 0, 292
+  /home/raghav/dsl/projects/locomotion/tracking/compress/90_20cms_0degUP_first_P56.avi:
+    crop: 0, 658, 0, 292
+  /home/raghav/dsl/projects/locomotion/tracking/compress/4_afterCNO_20cms_0degUP_first.avi:
+    crop: 0, 658, 0, 304
+  /home/raghav/dsl/projects/locomotion/tracking/compress/35_20cms_0degUP_first_P63.avi:
+    crop: 0, 658, 0, 230
+  /home/raghav/dsl/projects/locomotion/tracking/compress/3_15cms_0degUP_second_P35.avi:
+    crop: 0, 658, 0, 304
+  /home/raghav/dsl/projects/locomotion/tracking/compress/2_afterCNO_15cms_0degUP_first.avi:
+    crop: 0, 658, 0, 304
+  /home/raghav/dsl/projects/locomotion/tracking/compress/204_15cms_0degUP_third_P63.avi:
+    crop: 0, 658, 0, 304
+  /home/raghav/dsl/projects/locomotion/tracking/compress/1_afterCNO_20cms_0degUP.avi:
+    crop: 0, 658, 0, 304
+  /home/raghav/dsl/projects/locomotion/tracking/compress/1_15cms_0degUP_first_P35.avi:
+    crop: 0, 658, 0, 304
+  /home/raghav/dsl/projects/locomotion/tracking/compress/115_10cms_0degUP_first_P63.avi:
+    crop: 0, 658, 0, 304
+  /home/raghav/dsl/projects/locomotion/tracking/compress/10_20cms_0degUP_first_P28.avi:
+    crop: 0, 658, 0, 304
+bodyparts:
+- snout
+- snoutL
+- snoutR
+- foreL
+- foreR
+- hindL
+- hindR
+- torso
+- torsoL
+- torsoR
+- tail
+start: 0
+stop: 1
+numframes2pick: 20
+
+    # Plotting configuration
+skeleton:
+- - bodypart1
+  - bodypart2
+- - objectA
+  - bodypart3
+skeleton_color: black
+pcutoff: 0.1
+dotsize: 6
+alphavalue: 0.7
+colormap: jet
+
+    # Training,Evaluation and Analysis configuration
+TrainingFraction:
+- 0.95
+iteration: 0
+default_net_type: resnet_50
+default_augmenter: default
+snapshotindex: -1
+batch_size: 8
+
+    # Cropping Parameters (for analysis and outlier frame detection)
+cropping: false
+croppedtraining:
+    #if cropping is true for analysis, then set the values here:
+x1: 0
+x2: 640
+y1: 277
+y2: 624
+
+    # Refinement configuration (parameters from annotation dataset configuration also relevant in this stage)
+corner2move2:
+- 50
+- 50
+move2corner: true
+resnet:
+create_video_with_all_detections: Yes

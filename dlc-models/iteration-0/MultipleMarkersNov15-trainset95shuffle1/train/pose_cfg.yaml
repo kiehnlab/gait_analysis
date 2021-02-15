@@ -1,0 +1,62 @@
+all_joints:
+- - 0
+- - 1
+- - 2
+- - 3
+- - 4
+- - 5
+- - 6
+- - 7
+- - 8
+- - 9
+- - 10
+all_joints_names:
+- snout
+- snoutL
+- snoutR
+- foreL
+- foreR
+- hindL
+- hindR
+- torso
+- torsoL
+- torsoR
+- tail
+bottomheight: 400
+crop: true
+cropratio: 0.4
+dataset: training-datasets/iteration-0/UnaugmentedDataSet_MultipleMarkersNov15/MultipleMarkers_Raghav95shuffle1.mat
+dataset_type: default
+display_iters: 100
+global_scale: 0.8
+init_weights: /home/raghav/miniconda3/envs/dlc-debian/lib/python3.6/site-packages/deeplabcut/pose_estimation_tensorflow/models/pretrained/resnet_v1_50.ckpt
+intermediate_supervision: false
+intermediate_supervision_layer: 12
+leftwidth: 400
+location_refinement: true
+locref_huber_loss: true
+locref_loss_weight: 0.05
+locref_stdev: 7.2801
+max_input_size: 1500
+metadataset: training-datasets/iteration-0/UnaugmentedDataSet_MultipleMarkersNov15/Documentation_data-MultipleMarkers_95shuffle1.pickle
+min_input_size: 64
+minsize: 100
+mirror: false
+multi_step:
+- - 0.005
+  - 10000
+- - 0.02
+  - 430000
+- - 0.002
+  - 730000
+- - 0.001
+  - 20000
+net_type: resnet_50
+num_joints: 11
+pos_dist_thresh: 17
+project_path: /home/raghav/dsl/projects/locomotion/deepLabCut/DeepLabCut/conda-environments/locomotion-raghav-2019-10-31/MultipleMarkers-Raghav-2019-11-15
+rightwidth: 400
+save_iters: 500
+scale_jitter_lo: 0.5
+scale_jitter_up: 1.25
+topheight: 400

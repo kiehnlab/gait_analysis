@@ -1,0 +1,111 @@
+2019-11-16 09:26:51 Config:
+{'all_joints': [[0], [1], [2], [3], [4], [5], [6], [7], [8], [9], [10]],
+ 'all_joints_names': ['snout',
+                      'snoutL',
+                      'snoutR',
+                      'foreL',
+                      'foreR',
+                      'hindL',
+                      'hindR',
+                      'torso',
+                      'torsoL',
+                      'torsoR',
+                      'tail'],
+ 'batch_size': 8,
+ 'bottomheight': 400,
+ 'crop': True,
+ 'crop_pad': 0,
+ 'cropratio': 0.4,
+ 'dataset': 'training-datasets/iteration-0/UnaugmentedDataSet_MultipleMarkersNov15/MultipleMarkers_Raghav95shuffle1.mat',
+ 'dataset_type': 'default',
+ 'deconvolutionstride': 2,
+ 'deterministic': False,
+ 'display_iters': 100,
+ 'fg_fraction': 0.25,
+ 'global_scale': 0.8,
+ 'init_weights': '/home/raghav/miniconda3/envs/dlc-debian/lib/python3.6/site-packages/deeplabcut/pose_estimation_tensorflow/models/pretrained/resnet_v1_50.ckpt',
+ 'intermediate_supervision': False,
+ 'intermediate_supervision_layer': 12,
+ 'leftwidth': 400,
+ 'location_refinement': True,
+ 'locref_huber_loss': True,
+ 'locref_loss_weight': 0.05,
+ 'locref_stdev': 7.2801,
+ 'log_dir': 'log',
+ 'max_input_size': 1500,
+ 'mean_pixel': [123.68, 116.779, 103.939],
+ 'metadataset': 'training-datasets/iteration-0/UnaugmentedDataSet_MultipleMarkersNov15/Documentation_data-MultipleMarkers_95shuffle1.pickle',
+ 'min_input_size': 64,
+ 'minsize': 100,
+ 'mirror': False,
+ 'multi_step': [[0.005, 10000],
+                [0.02, 430000],
+                [0.002, 730000],
+                [0.001, 20000]],
+ 'net_type': 'resnet_50',
+ 'num_joints': 11,
+ 'num_outputs': 1,
+ 'optimizer': 'sgd',
+ 'output_stride': 16,
+ 'pos_dist_thresh': 17,
+ 'project_path': '/home/raghav/dsl/projects/locomotion/deepLabCut/DeepLabCut/conda-environments/locomotion-raghav-2019-10-31/MultipleMarkers-Raghav-2019-11-15',
+ 'regularize': False,
+ 'rightwidth': 400,
+ 'save_iters': 500,
+ 'scale_jitter_lo': 0.5,
+ 'scale_jitter_up': 1.25,
+ 'scoremap_dir': 'test',
+ 'shuffle': True,
+ 'snapshot_prefix': '/home/raghav/dsl/projects/locomotion/deepLabCut/DeepLabCut/conda-environments/locomotion-raghav-2019-10-31/MultipleMarkers-Raghav-2019-11-15/dlc-models/iteration-0/MultipleMarkersNov15-trainset95shuffle1/train/snapshot',
+ 'stride': 8.0,
+ 'topheight': 400,
+ 'weigh_negatives': False,
+ 'weigh_only_present_joints': False,
+ 'weigh_part_predictions': False,
+ 'weight_decay': 0.0001}
+2019-11-16 09:28:08 iteration: 100 loss: 0.0910 lr: 0.005
+2019-11-16 09:29:19 iteration: 200 loss: 0.0335 lr: 0.005
+2019-11-16 09:30:32 iteration: 300 loss: 0.0319 lr: 0.005
+2019-11-16 09:31:45 iteration: 400 loss: 0.0285 lr: 0.005
+2019-11-16 09:33:00 iteration: 500 loss: 0.0258 lr: 0.005
+2019-11-16 09:34:15 iteration: 600 loss: 0.0252 lr: 0.005
+2019-11-16 09:35:38 iteration: 700 loss: 0.0216 lr: 0.005
+2019-11-16 09:36:55 iteration: 800 loss: 0.0209 lr: 0.005
+2019-11-16 09:38:07 iteration: 900 loss: 0.0208 lr: 0.005
+2019-11-16 09:39:30 iteration: 1000 loss: 0.0200 lr: 0.005
+2019-11-16 09:40:53 iteration: 1100 loss: 0.0187 lr: 0.005
+2019-11-16 09:42:24 iteration: 1200 loss: 0.0178 lr: 0.005
+2019-11-16 09:43:59 iteration: 1300 loss: 0.0167 lr: 0.005
+2019-11-16 09:45:25 iteration: 1400 loss: 0.0167 lr: 0.005
+2019-11-16 09:46:48 iteration: 1500 loss: 0.0173 lr: 0.005
+2019-11-16 09:48:18 iteration: 1600 loss: 0.0159 lr: 0.005
+2019-11-16 09:49:44 iteration: 1700 loss: 0.0152 lr: 0.005
+2019-11-16 09:51:16 iteration: 1800 loss: 0.0147 lr: 0.005
+2019-11-16 09:52:48 iteration: 1900 loss: 0.0157 lr: 0.005
+2019-11-16 09:54:16 iteration: 2000 loss: 0.0147 lr: 0.005
+2019-11-16 09:55:49 iteration: 2100 loss: 0.0143 lr: 0.005
+2019-11-16 09:57:22 iteration: 2200 loss: 0.0134 lr: 0.005
+2019-11-16 09:58:54 iteration: 2300 loss: 0.0131 lr: 0.005
+2019-11-16 10:00:19 iteration: 2400 loss: 0.0142 lr: 0.005
+2019-11-16 10:01:41 iteration: 2500 loss: 0.0137 lr: 0.005
+2019-11-16 10:03:08 iteration: 2600 loss: 0.0126 lr: 0.005
+2019-11-16 10:04:30 iteration: 2700 loss: 0.0132 lr: 0.005
+2019-11-16 10:05:53 iteration: 2800 loss: 0.0132 lr: 0.005
+2019-11-16 10:07:20 iteration: 2900 loss: 0.0120 lr: 0.005
+2019-11-16 10:08:40 iteration: 3000 loss: 0.0119 lr: 0.005
+2019-11-16 10:09:57 iteration: 3100 loss: 0.0129 lr: 0.005
+2019-11-16 10:11:14 iteration: 3200 loss: 0.0128 lr: 0.005
+2019-11-16 10:12:29 iteration: 3300 loss: 0.0122 lr: 0.005
+2019-11-16 10:13:45 iteration: 3400 loss: 0.0121 lr: 0.005
+2019-11-16 10:15:07 iteration: 3500 loss: 0.0113 lr: 0.005
+2019-11-16 10:16:24 iteration: 3600 loss: 0.0118 lr: 0.005
+2019-11-16 10:17:46 iteration: 3700 loss: 0.0107 lr: 0.005
+2019-11-16 10:18:58 iteration: 3800 loss: 0.0121 lr: 0.005
+2019-11-16 10:20:11 iteration: 3900 loss: 0.0115 lr: 0.005
+2019-11-16 10:21:33 iteration: 4000 loss: 0.0106 lr: 0.005
+2019-11-16 10:23:02 iteration: 4100 loss: 0.0107 lr: 0.005
+2019-11-16 10:24:17 iteration: 4200 loss: 0.0113 lr: 0.005
+2019-11-16 10:25:31 iteration: 4300 loss: 0.0108 lr: 0.005
+2019-11-16 10:27:02 iteration: 4400 loss: 0.0102 lr: 0.005
+2019-11-16 10:28:27 iteration: 4500 loss: 0.0106 lr: 0.005
+2019-11-16 10:30:00 iteration: 4600 loss: 0.0105 lr: 0.005
