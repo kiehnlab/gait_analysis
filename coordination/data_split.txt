@@ -1,0 +1,9 @@
+Fasted,Control
+Cage1_0L0R,Cage2_0L0R
+Cage2_1L0R,Cage2_1L1R
+Cage3_0L0R,Cage4_0L0R
+Cage3_0L1R,Cage4_0L1R
+Cage3_1L1R,Cage4_1L1R
+Cage6_0L0R,Cage5_0L0R
+Cage6_0L1R,Cage5_0L1R
+,Cage5_1L1R
