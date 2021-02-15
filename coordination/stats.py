@@ -9,9 +9,9 @@ import pdb
 import pickle
 import os
 #from coord import coordProfiler, meanVector, groupPlot
-from constants import locKeys
+from coordination.constants import locKeys
 import numpy as np
-from plotter import processDict
+from coordination.plotter import processDict
 import glob
 import matplotlib.pyplot as plt
 from pycircstat import watson_williams 

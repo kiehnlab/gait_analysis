@@ -7,7 +7,7 @@ import warnings
 warnings.filterwarnings("ignore")
 import os
 import matplotlib.pyplot as plt
-from constants import *
+from coordination.constants import *
 
 def videoMetadata(vid):
     meta = {}

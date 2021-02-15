@@ -6,13 +6,13 @@ import glob
 import time
 import os
 from combinedPlot import processDict
-from tools import videoMetadata
-from constants import *
+from coordination.tools import videoMetadata
+from coordination.constants import *
 import pdb 
 from scipy.stats import circmean
 from coord import iqrMean, heurCircular
 from matplotlib import gridspec
-from accel import estimateAccel, analyseDragRec
+from coordination.accel import estimateAccel, analyseDragRec
 
 ## MAIN PROGRAM STARTS HERE ## 
 

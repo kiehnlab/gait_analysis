@@ -6,9 +6,9 @@ import warnings
 warnings.filterwarnings("ignore")
 import os
 import matplotlib.pyplot as plt
-from tools import videoMetadata
+from coordination.tools import videoMetadata
 #from speed import estimateSpeed
-from constants import *
+from coordination.constants import *
 from scipy.stats import circmean
 from matplotlib.gridspec import GridSpec
 import matplotlib

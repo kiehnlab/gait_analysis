@@ -11,11 +11,16 @@ import pdb
 import pickle
 os.environ['DLClight'] = 'True'
 
+from Speed_coord import S_C_profiler
+
 
 class Video_analyser(wx.Panel):
     def __init__(self,parent,gui_size):
-        h = gui_size[0]
-        w = gui_size[1]
+        self.test_text = 'TRATATAT'
+        self.parent = parent
+        self.gui_size = gui_size
+        h = self.gui_size[0]
+        w = self.gui_size[1]
         self.filelist = []
         wx.Panel.__init__(self, parent, -1, style=wx.SUNKEN_BORDER,size=(w,h))
 
@@ -96,7 +101,7 @@ class Video_analyser(wx.Panel):
         sizer.Add(self.boxsizer,pos=(10,0),flag=wx.EXPAND | wx.TOP | wx.LEFT, border=10)
 
         self.run = wx.Button(self,label='RUN')
-        self.run.Enable(False)
+        self.run.Enable(True)
         sizer.Add(self.run,pos=(11,5),flag= wx.TOP | wx.RIGHT)
         self.run.Bind(wx.EVT_BUTTON,self.run_script)
 
@@ -107,6 +112,8 @@ class Video_analyser(wx.Panel):
         sizer.Fit(self)
 
 
+    # def get_project_path(self,event):
+    #     return self.test_text
 
     def check_video_path(self,event):
         dlg = wx.MessageDialog(self,message='%s\n%s\n%s' %(self.filelist[0],self.filelist[1],self.filelist[2]),caption='Check of path', style=wx.OK)
@@ -120,6 +127,7 @@ class Video_analyser(wx.Panel):
         if self.save_dir.GetPath() == '' or self.project_name.GetValue() == '' or self.author_name.GetValue() == '':
             dlg = wx.MessageDialog(self,message='Make sure to choose directory and insert yours and projects names!!',style=wx.ICON_ERROR | wx.OK)
             dlg.ShowModal()
+            return
 
         self.dest = self.save_dir.GetPath()+'/'+self.author_name.GetValue()+'-'+self.project_name.GetValue()+'-'+datetime.datetime.now().strftime('%Y-%m-%d')
 
@@ -183,6 +191,11 @@ class Video_analyser(wx.Panel):
         [shutil.move(f, self.dest_labels) for f in labels]
         labels = glob.glob('./examples/' + '*.pickle')
         [shutil.move(f, self.dest_labels) for f in labels]
+
+        [shutil.copy(f, self.dest) for f in self.filelist]
+
+        page3 = S_C_profiler(self.parent,self.gui_size,self.dest_labels)
+        self.parent.AddPage(page3,'Speed_Coord')
 
     def get_vid_dir(self,vid_path):
         a = vid_path.split('/')

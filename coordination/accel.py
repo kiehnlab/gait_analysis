@@ -7,8 +7,8 @@ import warnings
 warnings.filterwarnings("ignore")
 import os
 import matplotlib.pyplot as plt
-from tools import videoMetadata
-from constants import *
+from coordination.tools import videoMetadata
+from coordination.constants import *
 
 ############# Acceleration analysis #######################
 

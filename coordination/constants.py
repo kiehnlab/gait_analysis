@@ -1,7 +1,7 @@
 # Global parameters
 
 #model name
-model = 'DLC_resnet50_MultipleMarkersNov15shuffle1_4500'
+model = 'DLC_resnet_50_MultipleMarkersNov15shuffle1_4500'
 
 # Marker ids used in DeepLabCut
 mrkr = ['snout', 'snoutL', 'snoutR', 'foreL', 'foreR','hindL', 

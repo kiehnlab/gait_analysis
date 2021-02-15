@@ -39,11 +39,10 @@ class MainFrame(wx.Frame):
         tab2 = Video_analyser(self.nb,self.gui_size)
         self.nb.AddPage(tab2,'Video Analyser')
 
-        # tab3 = Speed_and_Coordination_profiler(self.nb, self.gui_size)
-
         self.sizer = wx.BoxSizer()
         self.sizer.Add(self.nb, 1, wx.EXPAND)
         self.panel.SetSizer(self.sizer)
+
 
 app = wx.App()
 frame = MainFrame().Show()

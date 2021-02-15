@@ -8,10 +8,10 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 
-from tools import videoMetadata
-from constants import *
-from accel import *
-from coord import *
+from coordination.tools import videoMetadata
+from coordination.constants import *
+from coordination.accel import *
+from coordination.coord import *
 
 ############## Speed analysis ##########
 
@@ -168,7 +168,7 @@ def locomotionProfiler(data_path,saveFlag=False,plotFlag=False,log=False):
                           cadence[1],cadence[2],cadence[3],stepLen[0],\
                          stepLen[1],stepLen[2],stepLen[3]),file=f)
         if saveFlag:
-            data = dict.fromkeys(keys,None)            
+            data = dict.fromkeys(keys,None)
             data['speed'] = speedAll
             data['lCad'] = cadence[0]
             data['rCad'] = cadence[1]

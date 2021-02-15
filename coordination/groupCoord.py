@@ -9,9 +9,9 @@ import argparse
 import pdb
 import pickle
 import os
-from coord import coordProfiler, meanVector, groupPlot
+from coordination.coord import coordProfiler, meanVector, groupPlot
 import numpy as np
-from plotter import processDict
+from coordination.plotter import processDict
 import glob
 import matplotlib.pyplot as plt
 import pandas as pd
