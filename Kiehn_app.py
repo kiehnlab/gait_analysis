@@ -3,6 +3,7 @@ import os
 import datetime
 from Welcome import Welcome
 from Video_analyser import Video_analyser
+from Speed_coord import S_C_profiler
 
 
 class MainFrame(wx.Frame):
@@ -38,6 +39,9 @@ class MainFrame(wx.Frame):
 
         tab2 = Video_analyser(self.nb,self.gui_size)
         self.nb.AddPage(tab2,'Video Analyser')
+
+        # tab3 = S_C_profiler(self.nb,self.gui_size,'/home/janek/Downloads')
+        # self.nb.AddPage(tab3,'Speed')
 
         self.sizer = wx.BoxSizer()
         self.sizer.Add(self.nb, 1, wx.EXPAND)
