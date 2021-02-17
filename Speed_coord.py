@@ -24,6 +24,10 @@ class S_C_profiler(wx.Panel):
         line = wx.StaticLine(self)
         sizer.Add(line, pos=(1, 0), span=(1, w), flag=wx.EXPAND | wx.BOTTOM, border=5)
 
+        txt1 = wx.StaticText(self,label = 'Part1: Create speed profiles.')
+        sizer.Add(txt1,pos=(2,0),flag=wx.EXPAND)
+
+
         self.save_np = wx.RadioBox(
             self,
             label='Want to save results as numpy table?',
@@ -31,7 +35,7 @@ class S_C_profiler(wx.Panel):
             majorDimension=1,
             style = wx.RA_SPECIFY_COLS,
         )
-        sizer.Add(self.save_np,pos=(2,0),flag=wx.EXPAND)
+        sizer.Add(self.save_np,pos=(3,0),flag=wx.EXPAND)
 
         self.save_plot = wx.RadioBox(
             self,
@@ -40,7 +44,7 @@ class S_C_profiler(wx.Panel):
             majorDimension=1,
             style = wx.RA_SPECIFY_COLS,
         )
-        sizer.Add(self.save_plot,pos=(2,1),flag=wx.EXPAND)
+        sizer.Add(self.save_plot,pos=(3,1),flag=wx.EXPAND)
 
         self.save_log = wx.RadioBox(
             self,
@@ -49,13 +53,27 @@ class S_C_profiler(wx.Panel):
             majorDimension=1,
             style = wx.RA_SPECIFY_COLS,
         )
-        sizer.Add(self.save_log,pos=(2,2),flag=wx.EXPAND)
+        sizer.Add(self.save_log,pos=(3,2),flag=wx.EXPAND)
 
 
         self.check = wx.Button(self,label='Run speed analysis!')
-        sizer.Add(self.check,pos=(5,0))
+        sizer.Add(self.check,pos=(4,2),flag=wx.EXPAND)
         self.check.Bind(wx.EVT_BUTTON,self.locomotion)
 
+
+        line1 = wx.StaticLine(self)
+        sizer.Add(line1, pos=(6, 0), span=(1, w), flag=wx.EXPAND | wx.BOTTOM, border=5)
+
+
+        txt2 = wx.StaticText(self,label='Part2: Create combined analysis including speed, accelartion and cadence.')
+        sizer.Add(txt2,pos=(7,0),flag=wx.TOP)
+        # tThresh_text = wx.StaticBox(self,label='Specify duration to count a drag/recovery event.')
+        # tThresh_boxsizer = ws.StaticBoxSizer(tThresh_text,wx.Vertical)
+        tThresh_txt = wx.StaticText(self,label='Specify duration to count a drag/recovery event.')
+        sizer.Add(tThresh_txt,pos=(8,0),flag=wx.TOP)
+
+        self.tThresh = wx.SpinCtrlDouble(self,value='',min=0,max=1,initial=0.25,inc=0.05)
+        sizer.Add(self.tThresh,pos=(9,0),flag=wx.TOP)
 
 
 

@@ -17,10 +17,11 @@ class Welcome(wx.Panel):
         font = font.Bold()
 
         self.welcome_txt.SetFont(font)
-        sizer.Add(self.welcome_txt,pos=(0,16),flag = wx.CENTER)
+        sizer.Add(self.welcome_txt,pos=(1,10),flag = wx.CENTER)
 
-        self.ole = wx.StaticBitmap(self,-1,wx.Bitmap('mice.jpg',wx.BITMAP_TYPE_ANY))
-        sizer.Add(self.ole, pos=(1,16),flag=wx.EXPAND)
+
+        self.image = wx.StaticBitmap(self,-1,wx.Bitmap('gait1.png',wx.BITMAP_TYPE_ANY))
+        sizer.Add(self.image, pos=(4,7),span=(10,16),flag=wx.CENTER)
 
         self.SetSizer(sizer)
         sizer.Fit(self)

@@ -27,7 +27,7 @@ class MainFrame(wx.Frame):
             size=wx.Size(self.gui_size),
             style=wx.RESIZE_BORDER | wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL,
         )
-
+        self.SetIcon(wx.Icon('mice.jpg'))
         self.SetSizeHints(
             wx.Size(self.gui_size)
         )
@@ -40,8 +40,8 @@ class MainFrame(wx.Frame):
         tab2 = Video_analyser(self.nb,self.gui_size)
         self.nb.AddPage(tab2,'Video Analyser')
 
-        # tab3 = S_C_profiler(self.nb,self.gui_size,'/home/janek/Downloads')
-        # self.nb.AddPage(tab3,'Speed')
+        tab3 = S_C_profiler(self.nb,self.gui_size,'/home/janek/Downloads')
+        self.nb.AddPage(tab3,'Speed')
 
         self.sizer = wx.BoxSizer()
         self.sizer.Add(self.nb, 1, wx.EXPAND)
