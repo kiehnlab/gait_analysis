@@ -16,7 +16,6 @@ from Speed_coord import S_C_profiler
 
 class Video_analyser(wx.Panel):
     def __init__(self,parent,gui_size):
-        self.test_text = 'TRATATAT'
         self.parent = parent
         self.gui_size = gui_size
         h = self.gui_size[0]
@@ -38,7 +37,7 @@ class Video_analyser(wx.Panel):
         line = wx.StaticLine(self)
         sizer.Add(line,pos=(1,0),span=(1,w), flag=wx.EXPAND | wx.BOTTOM, border =5)
 
-        self.save_dir_txt = wx.StaticText(self,label='Select working directory:')
+        self.save_dir_txt = wx.StaticText(self,label='Select where to create the project:')
         sizer.Add(self.save_dir_txt,pos=(2,0),flag =wx.BOTTOM | wx.EXPAND, border = 5)
 
         self.save_dir = wx.DirPickerCtrl(
@@ -105,8 +104,8 @@ class Video_analyser(wx.Panel):
         sizer.Add(self.run,pos=(11,5),flag= wx.TOP | wx.RIGHT)
         self.run.Bind(wx.EVT_BUTTON,self.run_script)
 
-        self.reset = wx.Button(self,label='RESET')
-        sizer.Add(self.reset,pos=(11,3),flag= wx.TOP)
+        # self.reset = wx.Button(self,label='RESET')
+        # sizer.Add(self.reset,pos=(11,3),flag= wx.TOP)
 
         self.SetSizer(sizer)
         sizer.Fit(self)
@@ -195,7 +194,7 @@ class Video_analyser(wx.Panel):
         [shutil.copy(f, self.dest) for f in self.filelist]
 
         page3 = S_C_profiler(self.parent,self.gui_size,self.dest_labels)
-        self.parent.AddPage(page3,'Speed_Coord')
+        self.parent.AddPage(page3,'Speed and Coordination')
 
     def get_vid_dir(self,vid_path):
         a = vid_path.split('/')

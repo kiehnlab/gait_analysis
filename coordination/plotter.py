@@ -37,7 +37,7 @@ def combinedPlot(data_path,saveFlag=False,paperPlot=False):
     """
 #    pdb.set_trace()
     os.chdir(data_path)
-    files = sorted(glob.glob('*_Profile.npy'))
+    files = sorted(glob.glob('../allProfiles/*_Profile.npy'))
     uniqF = [f.split('_0deg')[0] for f in files];
     uniqF = list(np.unique(uniqF))
 

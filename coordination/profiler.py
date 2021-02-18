@@ -92,6 +92,7 @@ def locomotionProfiler(data_path,saveFlag=False,plotFlag=False,log=False):
     """
     os.chdir(data_path)
     vidFiles = sorted(glob.glob('../*.avi'))
+    vidFiles.extend(sorted(glob.glob('../*.mp4')))
     if not os.path.exists(spProfLoc):
         os.mkdir(spProfLoc)
         print('Speed profiles will be saved in '+spProfLoc)
@@ -107,9 +108,14 @@ def locomotionProfiler(data_path,saveFlag=False,plotFlag=False,log=False):
     for i in range(len(vidFiles)):
 
         vid = vidFiles[i]
-        ipFile = glob.glob(vid.split('/')[1].split('.avi')[0]+'*.h5')[0]
-        fName = spProfLoc+vid.split('.avi')[0].split('..')[1]
-        print("\n Processing tracks for "+vid)
+        if vid.split('.')[-1] == 'avi':
+            ipFile = glob.glob(vid.split('/')[1].split('.avi')[0]+'*.h5')[0]
+            fName = spProfLoc+vid.split('.avi')[0].split('..')[1]
+            print("\n Processing tracks for "+vid)
+        else:
+            ipFile = glob.glob(vid.split('/')[1].split('.mp4')[0] + '*.h5')[0]
+            fName = spProfLoc + vid.split('.mp4')[0].split('..')[1]
+            print("\n Processing tracks for " + vid)
 
         # Load video metadata
         meta = videoMetadata(vid)
