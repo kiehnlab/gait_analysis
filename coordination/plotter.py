@@ -27,7 +27,7 @@ def processDict(dFiles):
 #        allData[k] = np.hstack(allData[k])
     return allData
 
-def combinedPlot(data_path,saveFlag=False,paperPlot=False):
+def combinedPlot(data_path,saveFlag=False,paperPlot=True):
     """
     Input: Npz file with all processed data 
     Output: Combined plots for triplicates

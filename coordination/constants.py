@@ -19,7 +19,7 @@ smFactor = 1
 speedSmFactor = 10
 speedThr = 5 # Used to leave out stride and cadence calcuations
 # Acceleration smoothing params
-tThr = 0.25 # Duration to count a drag/recovery event
+tThr = 0.1 # Duration to count a drag/recovery event
 accSmFactor = 12
 # Location to save speedProfiles
 spProfLoc = '../allProfiles'

@@ -59,7 +59,9 @@ def countDragReco(nAcc,pAcc,xAxis):
     for i in range(len(zIdx)-1):
         if zIdx[i+1] == (zIdx[i]+1):
             remIdx.append(i+1)
-        uniqRecoIdx = np.delete(zIdx,np.array(remIdx))
+        #pdb.set_trace()
+        if len(remIdx) > 0:
+            uniqRecoIdx = np.delete(zIdx,np.array(remIdx)) 
 
     if len(uniqDragIdx) > len(uniqRecoIdx):
         uniqRecoIdx=np.concatenate((uniqRecoIdx,[len(xAxis)]))
