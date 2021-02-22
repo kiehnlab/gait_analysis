@@ -37,10 +37,10 @@ def plotDragReco(xAxis,accMean,drgIdx,recIdx,
         else:
             plt.plot(xAxis[sIdx:lIdx],accMean[sIdx:lIdx],'r')
     plt.legend(loc='upper left')
-    plt.title('Subject '+vid.split('/')[1].split('.')[0]+'; Peak Acceleration: %.2f cm/s2; Threshold: %.2f s \n Total drag events: %d, Recovery Events: %d, Ratio: %.3f \n Total drag dur: %.2f, Recovery dur: %.2f, Ratio: %.3f'
+    plt.title('Subject '+vid+'; Peak Acceleration: %.2f cm/s2; Threshold: %.2f s \n Total drag events: %d, Recovery Events: %d, Ratio: %.3f \n Total drag dur: %.2f, Recovery dur: %.2f, Ratio: %.3f'
               %(accMean.max(),tThr, dragCount,recCount, (1+dragCount)/(1+recCount+1e-3),drgDur,recDur,(1+drgDur)/(1+recDur+1e-3) ))
     if plotSave:
-        plt.savefig(acProfLoc+vid.split('.avi')[0].split('..')[1]+'_accelProfile.pdf')
+        plt.savefig('allProfiles/'+vid+'_accelProfile.pdf')#acProfLoc+vid.split('.avi')[0].split('..')[1]+'_accelProfile.pdf')
     return
 
 def countDragReco(nAcc,pAcc,xAxis):

@@ -203,3 +203,6 @@ def locomotionProfiler(data_path,saveFlag=False,plotFlag=False,log=False):
             data['fLStride']=stride[2]
             np.save(fName+'_Profile.npy',data)
 
+
+
+

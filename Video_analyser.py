@@ -14,7 +14,7 @@ import threading
 from Speed_coord import S_C_profiler
 
 class analysis_Thread(threading.Thread):
-    def __init__(self, threadID, name, filelist1, labeled_videos='Yes'):
+    def __init__(self, threadID, name, filelist1, labeled_videos):
         threading.Thread.__init__(self)
         self.threadID = threadID
         self.name = name
@@ -187,15 +187,13 @@ class Video_analyser(wx.Panel):
             self.sel_vids.SetLabel("Total %s Videos selected" % len(self.filelist))
 
     def run_script(self,event):
-        # config = './config.yaml'
         if len(self.filelist) == 0:
             dlg = wx.MessageDialog(self,message='Upload videos!',style=wx.ICON_ERROR | wx.OK)
             dlg.ShowModal()
             return
 
-        t1 = analysis_Thread(1, "Video analysis",self.filelist)
+        t1 = analysis_Thread(1, "Video analysis",self.filelist,self.save_lab_videos.GetStringSelection())
         t1.start()
-        counter = 0
         dlg = wx.ProgressDialog('', 'Please wait..',
                                 style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME | wx.PD_CAN_ABORT | wx.STAY_ON_TOP)
         while t1.isAlive():

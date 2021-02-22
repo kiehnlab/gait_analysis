@@ -3,6 +3,7 @@ from Video_analyser import *
 from coordination.constants import *
 from coordination.profiler import *
 from coordination.plotter import *
+from Accel_plotter import *
 
 class S_C_profiler(wx.Panel):
     def __init__(self, parent, gui_size,proj_path):
@@ -94,6 +95,7 @@ class S_C_profiler(wx.Panel):
 
         self.accel = wx.Button(self, label='Run acceleration analysis')
         sizer.Add(self.accel, pos=(10, 2), flag=wx.ALIGN_RIGHT)
+        self.accel.Bind(wx.EVT_BUTTON,self.acceleration)
 
         line2 = wx.StaticLine(self)
         sizer.Add(line2, pos=(11, 0), span=(1, w), flag=wx.EXPAND | wx.BOTTOM, border=5)
@@ -134,4 +136,9 @@ class S_C_profiler(wx.Panel):
     def cadence(self,event):
         combinedPlot(data_path=self.proj_path,saveFlag=False,paperPlot=True)
         dlg = wx.MessageDialog(self, message='Cadence and circular plots created!', style=wx.OK)
+        dlg.ShowModal()
+
+    def acceleration(self,event):
+        accel_plotter('/'.join(self.proj_path.split('/')[:-1]))
+        dlg = wx.MessageDialog(self, message='Acceleration profiles created!', style=wx.OK)
         dlg.ShowModal()
