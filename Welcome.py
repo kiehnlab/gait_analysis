@@ -4,6 +4,8 @@ import datetime
 from Video_analyser import Video_analyser
 from Speed_coord import S_C_profiler
 from Load_project import loaded_S_C_profiler
+from Group_analysis import Group_plotter
+from Load_project_lateral import loaded_lateral_profiler
 
 
 class Welcome(wx.Panel):
@@ -38,7 +40,7 @@ class Welcome(wx.Panel):
         self.select_mode = wx.RadioBox(
             self,
             label='Select type of analysis:',
-            choices=['Bottom view', 'Lateral view'],
+            choices=['Bottom view', 'Lateral view','Combined view'],
             majorDimension=1,
             style=wx.RA_SPECIFY_ROWS,
         )
@@ -58,10 +60,19 @@ class Welcome(wx.Panel):
 
     def On_start(self,event):
         if self.select_opt.GetStringSelection() == 'Create new project':
-            new_project = Video_analyser(self.parent,self.gui_size)
+            new_project = Video_analyser(self.parent,self.gui_size,self.select_mode.GetStringSelection())
             self.parent.AddPage(new_project,'Video Analyser')
             self.parent.SetSelection(1)
-        else:
+        elif self.select_opt.GetStringSelection() == 'Load existing project' and self.select_mode.GetStringSelection() == 'Bottom view':
             load_project = loaded_S_C_profiler(self.parent,self.gui_size)
+            group_plot = Group_plotter(self.parent,self.gui_size)
             self.parent.AddPage(load_project,'Speed and Coordination')
+            self.parent.AddPage(group_plot,'Group analysis')
             self.parent.SetSelection(1)
+        elif self.select_opt.GetStringSelection() == 'Load existing project' and self.select_mode.GetStringSelection() == 'Lateral view':
+            load_project = loaded_lateral_profiler(self.parent,self.gui_size)
+            group_plot = Group_plotter(self.parent,self.gui_size)
+            self.parent.AddPage(load_project,'Lateral analysis')
+            self.parent.AddPage(group_plot,'Group analysis')
+            self.parent.SetSelection(1)
+

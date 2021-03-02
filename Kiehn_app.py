@@ -4,6 +4,7 @@ import datetime
 from Welcome import Welcome
 from Video_analyser import Video_analyser
 from Speed_coord import S_C_profiler
+from Load_project import loaded_S_C_profiler
 
 
 
@@ -23,7 +24,7 @@ class MainFrame(wx.Frame):
             self,
             None,
             wx.ID_ANY,
-            "Kiehn_App",
+            "Gait Analysis App",
             pos=wx.DefaultPosition,
             size=wx.Size(self.gui_size),
             style=wx.RESIZE_BORDER | wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL,
@@ -40,9 +41,12 @@ class MainFrame(wx.Frame):
 
         # tab2 = Video_analyser(self.nb,self.gui_size)
         # self.nb.AddPage(tab2,'Video Analyser')
-        #
+
         # tab3 = S_C_profiler(self.nb,self.gui_size,'/home/janek/Downloads')
         # self.nb.AddPage(tab3,'Speed')
+        #
+        # tab4 = loaded_S_C_profiler(self.nb,self.gui_size)
+        # self.nb.AddPage(tab4,'load')
 
         self.sizer = wx.BoxSizer()
         self.sizer.Add(self.nb, 1, wx.EXPAND)

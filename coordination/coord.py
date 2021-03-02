@@ -229,32 +229,28 @@ def bodyCoordCircular(lStride, rStride):
     
     return phi, meanPhi, r, len(phi)
 
-def circularPlot(phi,r,fig, gs, gsNum=0,vNum=0,paperPlot=False):
+def circularPlot(phi,r,title_name,fig, gs,row,col):
     meanPhi = circmean(phi)
-    ax = fig.add_subplot(gs[1,gsNum],polar=True)
-    if not paperPlot:
-        if gsNum == 0:
-            plt.title('Sinusoidal Circular statistics')
-        else:
-            plt.title('Heuristic Circular statistics')
+    # plt.clf()
+    ax = fig.add_subplot(gs[row,col],polar=True)
+    plt.title(title_name)
     ax.set_rlim(0,1.1)
     ax.spines['polar'].set_visible(False)
     ax.set_axisbelow(True)
-#    pdb.set_trace()
     ax.set_theta_offset(np.pi/2)
     T = (len(phi) if len(phi) > 1 else 1)
 
-    ax.scatter(phi,np.ones(T),marker='o',s=12,c='royalblue') #,label='Individual steps')
-    if paperPlot and vNum == -1:
-        ax.annotate("",xytext=(0.0,0.0),xy=(meanPhi,r),
-                   arrowprops=dict(facecolor=colors[vNum],width=0.5))
-        ax.plot((0,meanPhi),(0,r),color=colors[vNum]) #label=legends[vNum],color=colors[vNum])
+    ax.scatter(phi,np.ones(T),marker='o',s=12,c='tab:grey') #,label='Individual steps')
+    ax.annotate("",xytext=(0.0,0.0),xy=(meanPhi,r),
+               arrowprops=dict(color='tab:red',lw=3,width=0.5,fill='full'))
+    ax.plot((0,meanPhi),(0,r),color='tab:red') #label=legends[vNum],color=colors[vNum])
 #    plt.legend() 
     return fig
 
-def cadencePlot(movDur, lStride, rStride, fig, gs,circPlot=True):
+def cadencePlot(movDur, lStride, rStride, fig, gs,row,col,circPlot=True):
     #    plt.box(False)
 #    pdb.set_trace()
+#     plt.clf()
     lSMean = iqrMean(lStride)
     rSMean = iqrMean(rStride)
     
@@ -267,7 +263,7 @@ def cadencePlot(movDur, lStride, rStride, fig, gs,circPlot=True):
 #    if circPlot:
 #       fig = circularPlot(phi,R,fig,gs,1)
 
-    ax = fig.add_subplot(gs[0,:])
+    ax = fig.add_subplot(gs[row,col])
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
 
@@ -288,11 +284,11 @@ def measureCycles(stride):
     peaks,_ = find_peaks(stride,distance=thresh)
     return len(peaks),peaks
 
-def bodyPosCoord(ipFile,speedMean,avgSpeed, meta):
+def bodyPosCoord(ipFile,speedMean,avgSpeed,speedSmFactor, meta):
 
 #    model = ipFile.split('cms')[1].split('.')[0]
     data = pd.read_hdf(ipFile)
-    
+    speedSmFactor = int(speedSmFactor)
     fL = np.asarray(data[model][mrkr[3]]['x'])
     fL = np.convolve(fL, np.ones((smFactor,))/smFactor, mode='valid')
     fR = np.asarray(data[model][mrkr[5]]['x'])

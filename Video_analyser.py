@@ -12,13 +12,17 @@ import pickle
 os.environ['DLClight'] = 'True'
 import threading
 from Speed_coord import S_C_profiler
+from Lateral_analysis import lateral_panel
 
 class analysis_Thread(threading.Thread):
-    def __init__(self, threadID, name, filelist1, labeled_videos):
+    def __init__(self, threadID, name,analysis, filelist1, labeled_videos):
         threading.Thread.__init__(self)
         self.threadID = threadID
         self.name = name
-        self.config = './config.yaml'
+        if analysis == 'Bottom view':
+            self.config = './config.yaml'
+        elif analysis == 'Lateral view':
+            self.config = './lateral_analysis/config.yaml'
         self.filelist1 = filelist1
         self.labeled_videos = labeled_videos
     def run(self):
@@ -34,9 +38,10 @@ class analysis_Thread(threading.Thread):
         print ("Exiting " + self.name)
 
 class Video_analyser(wx.Panel):
-    def __init__(self,parent,gui_size):
+    def __init__(self,parent,gui_size,analysis_type):
         self.parent = parent
         self.gui_size = gui_size
+        self.analysis_type = analysis_type
         h = self.gui_size[0]
         w = self.gui_size[1]
         self.filelist = []
@@ -46,12 +51,17 @@ class Video_analyser(wx.Panel):
 
 
         self.intro_txt = wx.StaticText(self,label =' Step1 : Upload your video/videos and obtain h5 file with predicted coordinates.\n OPTIONAL : Obtain labeled videos')
+        font = self.intro_txt.GetFont()
+        font.PointSize += 0.5
+        font = font.Bold()
+        self.intro_txt.SetFont(font)
+
         top_sizer.Add(self.intro_txt,0,wx.ALL,5)
-        #sizer.Add(self.intro_txt, pos=(0,0),flag=wx.TOP | wx.LEFT |wx.EXPAND)
+        # sizer.Add(self.intro_txt, pos=(0,0),span=(1,2),flag=wx.TOP | wx.LEFT |wx.EXPAND)
 
         sizer = wx.GridBagSizer(10, 15)
 
-        sizer.Add(top_sizer,pos=(0,1))
+        sizer.Add(top_sizer,pos=(0,0),span=(1,5))
 
         line = wx.StaticLine(self)
         sizer.Add(line,pos=(1,0),span=(1,w), flag=wx.EXPAND | wx.BOTTOM, border =5)
@@ -65,20 +75,20 @@ class Video_analyser(wx.Panel):
             style=wx.DIRP_USE_TEXTCTRL | wx.DIRP_DIR_MUST_EXIST,
             message='Choose the working directory'
         )
-        sizer.Add(self.save_dir, pos=(2, 1), span=wx.DefaultSpan, flag=wx.BOTTOM | wx.EXPAND, border=5)
+        sizer.Add(self.save_dir, pos=(2, 1), span=(1,13), flag=wx.BOTTOM | wx.EXPAND, border=5)
 
 
         self.author_name_txt = wx.StaticText(self,label='Author name:')
         sizer.Add(self.author_name_txt,pos=(3,0),flag=wx.TOP | wx.EXPAND)
 
         self.author_name = wx.TextCtrl(self)
-        sizer.Add(self.author_name,pos=(3,1),span=(1,5),flag=wx.BOTTOM | wx.EXPAND)
+        sizer.Add(self.author_name,pos=(3,1),span=(1,13),flag=wx.BOTTOM | wx.EXPAND)
 
         self.project_name_txt = wx.StaticText(self,label='Project name:')
         sizer.Add(self.project_name_txt,pos=(4,0),flag=wx.TOP | wx.EXPAND)
 
         self.project_name = wx.TextCtrl(self)
-        sizer.Add(self.project_name,pos=(4,1),span=(1,5),flag=wx.EXPAND)
+        sizer.Add(self.project_name,pos=(4,1),span=(1,13),flag=wx.EXPAND)
 
 
 
@@ -86,7 +96,7 @@ class Video_analyser(wx.Panel):
 
         self.create_project = wx.Button(self,label='Create project!')
         #self.create_project.Enable(False)
-        sizer.Add(self.create_project,pos=(5,5),flag=wx.BOTTOM, border =5)
+        sizer.Add(self.create_project,pos=(5,13),flag=wx.BOTTOM, border =5)
         self.create_project.Bind(wx.EVT_BUTTON,self.create_new_project)
 
 
@@ -94,7 +104,7 @@ class Video_analyser(wx.Panel):
         sizer.Add(self.videos, pos=(7,0), flag = wx.TOP | wx.EXPAND, border = 5)
 
         self.sel_vids = wx.Button(self,label='Load Videos')
-        sizer.Add(self.sel_vids, pos=(7,1),span=(1,5), flag =wx.TOP | wx.EXPAND, border=5)
+        sizer.Add(self.sel_vids, pos=(7,1),span=(1,13), flag =wx.TOP | wx.EXPAND, border=5)
         self.sel_vids.Bind(wx.EVT_BUTTON, self.select_videos)
 
 
@@ -125,12 +135,12 @@ class Video_analyser(wx.Panel):
         sizer.Add(self.save_lab_videos,pos=(10,1),flag=wx.EXPAND | wx.TOP | wx.LEFT, border=10)
 
         self.run = wx.Button(self,label='RUN')
-        self.run.Enable(True)
-        sizer.Add(self.run,pos=(11,5),flag= wx.TOP | wx.RIGHT)
+        self.run.Enable(False)
+        sizer.Add(self.run,pos=(11,13),flag= wx.TOP | wx.RIGHT)
         self.run.Bind(wx.EVT_BUTTON,self.run_script)
 
         self.reset = wx.Button(self,label='RESET VIDEOS')
-        sizer.Add(self.reset,pos=(11,3),flag= wx.TOP)
+        sizer.Add(self.reset,pos=(11,12),flag= wx.TOP)
         self.reset.Bind(wx.EVT_BUTTON,self.reset_video)
 
         self.SetSizer(sizer)
@@ -192,7 +202,7 @@ class Video_analyser(wx.Panel):
             dlg.ShowModal()
             return
 
-        t1 = analysis_Thread(1, "Video analysis",self.filelist,self.save_lab_videos.GetStringSelection())
+        t1 = analysis_Thread(1, "Video analysis",self.analysis_type,self.filelist,self.save_lab_videos.GetStringSelection())
         t1.start()
         dlg = wx.ProgressDialog('', 'Please wait..',
                                 style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME | wx.PD_CAN_ABORT | wx.STAY_ON_TOP)
@@ -228,9 +238,14 @@ class Video_analyser(wx.Panel):
         #
         [shutil.copy(f, self.dest) for f in self.filelist]
         #
-        page3 = S_C_profiler(self.parent,self.gui_size,self.dest_labels)
-        self.parent.AddPage(page3,'Speed and Coordination')
-        self.parent.SetSelection(2)
+        if self.analysis_type == 'Bottom view':
+            page3 = S_C_profiler(self.parent,self.gui_size,self.dest_labels)
+            self.parent.AddPage(page3,'Speed and Coordination')
+            self.parent.SetSelection(2)
+        elif self.analysis_type == 'Lateral view':
+            page3 = lateral_panel(self.parent,self.gui_size,self.dest)
+            self.parent.AddPage(page3,'Lateral analysis')
+            self.parent.SetSelection(2)
 
     def get_vid_dir(self,vid_path):
         a = vid_path.split('/')

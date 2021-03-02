@@ -12,10 +12,12 @@ from coordination.constants import *
 
 ############# Acceleration analysis #######################
 
-def plotDragReco(xAxis,accMean,drgIdx,recIdx,
-                 dragCount,recCount,drgDur,recDur,vid,plotSave=True):
+def plotDragReco(tThr,xAxis,accMean,drgIdx,recIdx,
+                 dragCount,recCount,drgDur,recDur,vid,fig,gs,row,plotSave=False):
 
-    plt.figure(figsize=(16,10))
+    # plt.figure(figsize=(16,10))
+    # plt.clf()
+    ax = fig.add_subplot(gs[row,:])
     plt.plot(xAxis,accMean,color='lightgray',label='Instantaneous Acceleration')
     plt.plot(xAxis,np.zeros(len(xAxis)),'--k')
     plt.xlabel('Duration in s')
@@ -36,12 +38,13 @@ def plotDragReco(xAxis,accMean,drgIdx,recIdx,
             plt.plot(xAxis[sIdx:lIdx],accMean[sIdx:lIdx],'r',label='Drag Events')
         else:
             plt.plot(xAxis[sIdx:lIdx],accMean[sIdx:lIdx],'r')
-    plt.legend(loc='upper left')
-    plt.title('Subject '+vid+'; Peak Acceleration: %.2f cm/s2; Threshold: %.2f s \n Total drag events: %d, Recovery Events: %d, Ratio: %.3f \n Total drag dur: %.2f, Recovery dur: %.2f, Ratio: %.3f'
+    plt.legend(loc='upper right')
+    plt.xlim(0,np.max(xAxis))
+    plt.title('Peak Acceleration: %.2f cm/s2; Threshold: %.2f s \n Total drag events: %d, Recovery Events: %d, Ratio: %.3f \n Total drag dur: %.2f, Recovery dur: %.2f, Ratio: %.3f'
               %(accMean.max(),tThr, dragCount,recCount, (1+dragCount)/(1+recCount+1e-3),drgDur,recDur,(1+drgDur)/(1+recDur+1e-3) ))
     if plotSave:
         plt.savefig('allProfiles/'+vid+'_accelProfile.pdf')#acProfLoc+vid.split('.avi')[0].split('..')[1]+'_accelProfile.pdf')
-    return
+    return fig
 
 def countDragReco(nAcc,pAcc,xAxis):
 

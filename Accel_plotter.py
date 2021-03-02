@@ -1,38 +1,15 @@
-import cv2
-import matplotlib.pyplot as plt
-import numpy as np
-import argparse
-import glob
-import time
-import os
 from coordination.plotter import *
-from coordination.tools import videoMetadata
-from coordination.constants import *
-import pdb
-from scipy.stats import circmean
 from coordination.coord import iqrMean, heurCircular
-from matplotlib import gridspec
-from coordination.accel import estimateAccel, analyseDragRec
-import pyexifinfo as pex
-
-import pandas as pd
-import numpy as np
-import glob
-import pdb
 import warnings
-
 warnings.filterwarnings("ignore")
-import os
-import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
-from scipy.stats import circmean
 from coordination.tools import videoMetadata
 from coordination.constants import *
 from coordination.accel import *
-from coordination.coord import bodyPosCoord, bodyCoordCircular, circularPlot, cadencePlot
 
 
-def accel_plotter(project_path,start=0,end=-1):
+
+def accel_plotter(project_path,tThr,speedSmFactor,start=0,end=-1):
+    speedSmFactor = int(speedSmFactor)
     os.chdir(project_path)
     files = sorted(glob.glob('*.avi'))
     files = [f.replace('.avi', '') for f in files]
@@ -132,7 +109,7 @@ def accel_plotter(project_path,start=0,end=-1):
         #
         print("Drag events: %d, Rec. events : %d" % (dragCount, recCount))
 
-        plotDragReco(aAxis,accMean,drgIdx,recIdx,dragCount,recCount,drgDur,recDur,ipFile,True)
+        plotDragReco(tThr,aAxis,accMean,drgIdx,recIdx,dragCount,recCount,drgDur,recDur,ipFile,True)
 
 
 

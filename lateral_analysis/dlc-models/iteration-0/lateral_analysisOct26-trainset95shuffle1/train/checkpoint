@@ -1,0 +1,6 @@
+model_checkpoint_path: "/home/jwg356/erda/Roser_project/Tracking/DLC_model/lateral_analysis-raghav-2020-10-26/dlc-models/iteration-0/lateral_analysisOct26-trainset95shuffle1/train/snapshot-95000"
+all_model_checkpoint_paths: "/home/jwg356/erda/Roser_project/Tracking/DLC_model/lateral_analysis-raghav-2020-10-26/dlc-models/iteration-0/lateral_analysisOct26-trainset95shuffle1/train/snapshot-75000"
+all_model_checkpoint_paths: "/home/jwg356/erda/Roser_project/Tracking/DLC_model/lateral_analysis-raghav-2020-10-26/dlc-models/iteration-0/lateral_analysisOct26-trainset95shuffle1/train/snapshot-80000"
+all_model_checkpoint_paths: "/home/jwg356/erda/Roser_project/Tracking/DLC_model/lateral_analysis-raghav-2020-10-26/dlc-models/iteration-0/lateral_analysisOct26-trainset95shuffle1/train/snapshot-85000"
+all_model_checkpoint_paths: "/home/jwg356/erda/Roser_project/Tracking/DLC_model/lateral_analysis-raghav-2020-10-26/dlc-models/iteration-0/lateral_analysisOct26-trainset95shuffle1/train/snapshot-90000"
+all_model_checkpoint_paths: "/home/jwg356/erda/Roser_project/Tracking/DLC_model/lateral_analysis-raghav-2020-10-26/dlc-models/iteration-0/lateral_analysisOct26-trainset95shuffle1/train/snapshot-95000"

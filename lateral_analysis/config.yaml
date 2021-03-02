@@ -1,0 +1,70 @@
+# Project definitions (do not edit)
+Task: lateral_analysis
+scorer: jwg356
+date: Oct26
+
+# Project path (change when moving around)
+project_path: ./lateral_analysis
+
+# Annotation data set configuration (and individual video cropping parameters)
+video_sets:
+  /home/jwg356/erda/Roser_project/Tracking/LATERAL_videos/CNO_study_lateral/Control/After_CNO/705_20cms_0degUP_first.avi:
+    crop: 0, 658, 0, 302
+  /home/jwg356/erda/Roser_project/Tracking/LATERAL_videos/CNO_study_lateral/Control/After_CNO/715_20cms_0degUP_first.avi:
+    crop: 0, 658, 0, 302
+  /home/jwg356/erda/Roser_project/Tracking/LATERAL_videos/CNO_study_lateral/Control/After_CNO/723_20cms_0degUP_first.avi:
+    crop: 0, 658, 0, 302
+  /home/jwg356/erda/Roser_project/Tracking/LATERAL_videos/SOD1_study_lateral/SOD1/P49/6_20cms_0degUP_third.avi:
+    crop: 0, 658, 0, 216
+bodyparts:
+- toe
+- foot
+- ankle
+- knee
+- hip
+- crest
+start: 0
+stop: 1
+numframes2pick: 20
+
+# Plotting configuration
+skeleton:
+- - toe
+  - foot
+- - foot
+  - ankle
+- - ankle
+  - knee
+- - knee
+  - hip
+- - hip
+  - crest
+skeleton_color: black
+pcutoff: 0.1
+dotsize: 4
+alphavalue: 0.7
+colormap: jet
+
+# Training,Evaluation and Analysis configuration
+TrainingFraction:
+- 0.95
+iteration: 0
+resnet:
+snapshotindex: -1
+batch_size: 8
+
+# Cropping Parameters (for analysis and outlier frame detection)
+cropping: false
+#if cropping is true for analysis, then set the values here:
+x1: 0
+x2: 640
+y1: 277
+y2: 624
+
+# Refinement configuration (parameters from annotation dataset configuration also relevant in this stage)
+corner2move2:
+- 50
+- 50
+move2corner: true
+default_net_type: resnet_50
+default_augmenter: default
