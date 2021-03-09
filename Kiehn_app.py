@@ -19,7 +19,7 @@ class MainFrame(wx.Frame):
         index = 0  # For display 1.
         screenWidth = screenSizes[index][0]
         screenHeight = screenSizes[index][1]
-        self.gui_size = (screenWidth * 0.6, screenHeight * 0.55)
+        self.gui_size = (screenWidth * 0.8, screenHeight * 0.75)
         wx.Frame.__init__(
             self,
             None,

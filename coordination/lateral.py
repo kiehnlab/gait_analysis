@@ -138,3 +138,67 @@ def lateral_profiler(data_dir,scale,df):
                 meta['dur'],fName,cyc_angles,peaks,swing_idx,scale,dest)
 
     return df
+
+def lateral_profiler_combined(data_dir,scale,df):
+    # model = 'DLC_resnet50_lateral_analysisOct26shuffle1_100000'
+    bodyparts = ['toe','foot','ankle','knee','hip','crest']
+    bodyparts = bodyparts[::-1]
+
+    files = sorted(glob.glob(data_dir+'/lateral_videos/*.avi'))
+    files = [f.split('/')[-1] for f in files]
+
+    # data_dir = data_dir.replace('lateral/','')
+    dest = data_dir+'/allProfiles/'
+    if not os.path.exists(dest):
+        os.mkdir(dest)
+
+    print("Found %d videos to process"%len(files))
+    M = len(bodyparts)
+    for fName in files:
+        meta = videoMetadata(data_dir+'/lateral_videos/'+fName)
+        data_file = glob.glob(data_dir+'/labels/'+fName.replace('.avi','*.h5'))[0]
+        data = pd.read_hdf(data_file)
+        N = data.shape[0]
+        xval = np.zeros((N,M))
+        yval = np.zeros((N,M))
+        for m in range(M):
+            xval[:,m] = data[model_lateral][bodyparts[m]]['x'].values
+            yval[:,m] = data[model_lateral][bodyparts[m]]['y'].values
+        # Smooth values
+        xval = smooth(xval,L=10)
+        yval = smooth(yval,L=10)
+
+        # Rescale x,y to be [0,1]; y per time point, x across
+        yval = (1-(yval-yval.min()) / (yval.max()-yval.min()))
+        xval = (xval - xval.min(1).reshape(-1,1)) / (xval.max(1)-xval.min(1)).reshape(-1,1)
+        t = np.linspace(0,meta['dur'],len(xval))[::-1]
+        dist = pDist(xval)
+        dist = dist/dist.max()
+        xAng = xval * dist.max(1).reshape(-1,1)/scale + t.reshape(-1,1)
+        xAng = xAng - (xAng[:,[-1]] - t.reshape(-1,1))
+
+        ### Measure cycles based on foot angle
+        peaks, _ = find_peaks(yval[:,-1])
+        meanStep = iqrMean(np.diff(peaks))
+        ## Remove outlier peaks
+        peaks, _ = find_peaks(yval[:,-1],distance=meanStep)
+        swing_idx,yval = getSwingIdx(peaks,yval)
+        ### Measure angles
+        angles = [measureAngles(yval,xAng,i,i+1,i+2) for i in range(4)]
+        cyc_angles = [cycleAngles(peaks,angle) for angle in angles]
+        cyc_angles = np.array(cyc_angles)
+        ### Check ankle angle for differences
+        minAng = cyc_angles.min(2)
+        maxAng = cyc_angles.max(2)
+        dAng = maxAng-minAng
+        dAng[dAng > 120] = 120
+        dAng = dAng.mean(1)
+        for i in range(len(joints)):
+#           df[joints[i]+'_ang'][df.Name in fName] = dAng[i]
+            df.at[df.name == fName[9:-4],joints[i]+'_ang'] = dAng[i]
+        ### Save cycle_angles
+        np.save(dest+fName.replace('.avi','.npy'),cyc_angles)
+        makeStickFigure(xval,yval,dist,angles,\
+                meta['dur'],fName,cyc_angles,peaks,swing_idx,scale,dest)
+
+    return df
