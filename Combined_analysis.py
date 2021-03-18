@@ -1,11 +1,19 @@
 import wx
-from Video_analyser import *
-from coordination.constants import *
-from coordination.profiler import *
-from coordination.plotter import *
-from Accel_plotter import *
-from coordination.lateral import *
-from coordination.sticks import *
+#from Video_analyser import *
+#from coordination.constants import *
+#from coordination.profiler import *
+#from coordination.plotter import *
+#from Accel_plotter import *
+#from coordination.lateral import *
+#from coordination.sticks import *
+
+from gait_analysis.Video_analyser import *
+from gait_analysis.coordination.constants import *
+from gait_analysis.coordination.profiler import *
+from gait_analysis.coordination.plotter import *
+from gait_analysis.Accel_plotter import *
+from gait_analysis.coordination.lateral import *
+from gait_analysis.coordination.sticks import *
 
 class combined_profiler(wx.Panel):
     def __init__(self, parent, gui_size,proj_path):
@@ -230,13 +238,15 @@ class combined_profiler(wx.Panel):
             belt_speed = -1
 
         n_grid = n_grid + len(self.combination)
-        locomotionProfiler(data_path=self.proj_path + '/labels', tThr=self.tThresh.GetValue(),
-                           speedSmFactor=self.SpeedSmFactor.GetValue(), grid_number=n_grid,
-                           combination=self.combination, belt=belt_speed, saveFlag=True,
-                           plotFlag=False, log=True, plot_speed=save_speed, plot_acc=save_acc)
-
         N = len(glob.glob(self.proj_path + '/lateral_videos/*.avi'))
         df = pd.DataFrame(columns=df_cols, index=range(N))
         df[df_cols[1:]] = df[df_cols[1:]].apply(pd.to_numeric)
+        df = locomotionProfiler(data_path=self.proj_path + '/labels', tThr=self.tThresh.GetValue(),
+                           speedSmFactor=self.SpeedSmFactor.GetValue(), grid_number=n_grid,
+                           combination=self.combination, belt=belt_speed,df=df, saveFlag=True,
+                           plotFlag=False, log=True, plot_speed=save_speed, plot_acc=save_acc)
+
+        print(df)
         df = lateral_profiler_combined(self.proj_path, self.scaling_sticks.GetValue(), df)  # Measure joint angles, make stick figures
+        print(df)
         df.to_csv(self.proj_path + '/statistics.csv', index=False, float_format='%.4f', na_rep='0')

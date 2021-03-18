@@ -11,17 +11,22 @@ import pdb
 import pickle
 os.environ['DLClight'] = 'True'
 import threading
-from Speed_coord import S_C_profiler
-from Lateral_analysis import lateral_panel
-from Combined_analysis import combined_profiler
+import gait_analysis
+#from Speed_coord import S_C_profiler
+#from Lateral_analysis import lateral_panel
+#from Combined_analysis import combined_profiler
+
+from gait_analysis.Speed_coord import S_C_profiler
+from gait_analysis.Lateral_analysis import lateral_panel
+from gait_analysis.Combined_analysis import combined_profiler
 
 class analysis_Thread(threading.Thread):
     def __init__(self, threadID, name, filelist_bottom, filelist_lateral, labeled_videos):
         threading.Thread.__init__(self)
         self.threadID = threadID
         self.name = name
-        self.config_bottom = './config.yaml'
-        self.config_lateral = './lateral_analysis/config.yaml'
+        self.config_bottom = gait_analysis.__path__[0] + '/config.yaml'
+        self.config_lateral = gait_analysis.__path__[0] + '/lateral_analysis/config.yaml'
         self.filelist_bottom = filelist_bottom
         self.filelist_lateral = filelist_lateral
         self.labeled_videos = labeled_videos
@@ -180,8 +185,10 @@ class Video_analyser_combined(wx.Panel):
 
 
     def reset_video(self,event):
-        self.filelist =[]
-        self.sel_vids.SetLabel('Load Videos')
+        self.filelist_lateral =[]
+        self.filelist_bottom =[]
+        self.sel_vids_bottom.SetLabel('Load Videos')
+        self.sel_vids_lateral.SetLabel('Load Videos')
 
     def check_video_path(self,event):
         dlg = wx.MessageDialog(self,message='%s\n%s\n%s' %(self.filelist[0],self.filelist[1],self.filelist[2]),caption='Check of path', style=wx.OK)

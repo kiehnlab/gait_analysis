@@ -9,9 +9,11 @@ import pdb
 import pickle
 import os
 #from coord import coordProfiler, meanVector, groupPlot
-from coordination.constants import locKeys
+from gait_analysis.coordination.constants import locKeys
+#from coordination.constants import locKeys
 import numpy as np
-from coordination.plotter import processDict
+from gait_analysis.coordination.plotter import processDict
+#from coordination.plotter import processDict
 import glob
 import matplotlib.pyplot as plt
 from pycircstat import watson_williams 
@@ -19,6 +21,9 @@ import itertools
 from statsmodels.stats.multitest import multipletests
 np.set_printoptions(precision=4,suppress=True)
 from numpy import pi as PI
+
+
+
 
 def densitySample(phi,N,bins):
     """

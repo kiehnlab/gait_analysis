@@ -1,9 +1,15 @@
 import wx
-from Video_analyser import *
-from coordination.constants import *
-from coordination.profiler import *
-from coordination.plotter import *
-from Accel_plotter import *
+#from Video_analyser import *
+#from coordination.constants import *
+#from coordination.profiler import *
+#from coordination.plotter import *
+#from Accel_plotter import *
+
+from gait_analysis.Video_analyser import *
+from gait_analysis.coordination.constants import *
+from gait_analysis.coordination.profiler import *
+from gait_analysis.coordination.plotter import *
+from gait_analysis.Accel_plotter import *
 
 class loaded_S_C_profiler(wx.Panel):
     def __init__(self, parent, gui_size):

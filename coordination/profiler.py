@@ -8,10 +8,15 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 
-from coordination.tools import videoMetadata
-from coordination.constants import *
-from coordination.accel import *
-from coordination.coord import *
+from gait_analysis.coordination.tools import videoMetadata
+from gait_analysis.coordination.constants import *
+from gait_analysis.coordination.accel import *
+from gait_analysis.coordination.coord import *
+
+#from coordination.tools import videoMetadata
+#from coordination.constants import *
+#from coordination.accel import *
+#from coordination.coord import *
 
 ############## Speed analysis ##########
 
@@ -111,13 +116,14 @@ def plotSpeedProfile(vid, meta, beltSpeed, avgSpeed,
     return fig
 
 
-def locomotionProfiler(data_path,tThr,speedSmFactor,grid_number,combination,belt,saveFlag=False,plotFlag=False,log=False,plot_speed=False,plot_acc=False):
+def locomotionProfiler(data_path,tThr,speedSmFactor,grid_number,combination,belt,df,saveFlag=False,plotFlag=False,log=False,plot_speed=False,plot_acc=False):
     """
     Input: Pandas frame with tracks for each marker
     Output: Smoothed speed, acceleration and coordination profiles
     """
     os.chdir(data_path)
     vidFiles = sorted(glob.glob('../*.avi'))
+    print(vidFiles)
     vidFiles.extend(sorted(glob.glob('../*.mp4')))
     if not os.path.exists(spProfLoc):
         os.mkdir(spProfLoc)
@@ -253,6 +259,29 @@ def locomotionProfiler(data_path,tThr,speedSmFactor,grid_number,combination,belt
                           R_heur,(cadence[0]),\
                           cadence[1],cadence[2],cadence[3],stepLen[0],\
                          stepLen[1],stepLen[2],stepLen[3]),file=f)
+        print(df['name'])
+        df['name'][i] = vid.split('/')[-1].split('.')[0]
+        df['bodyLen'][i] = bodyLen
+        df['duration'][i], df['mov_dur'][i] = meta['dur'], movDur
+        df['belt speed'][i] = beltSpeed / 10
+        df['avg.speed'][i] = avgSpeed
+        df['peak_acc'][i] = accMean.max()
+        df['loc_front'][i], df['loc_rear'][i] = locHist[0], locHist[1]
+        df['num_rec'][i], df['num_drag'][i] = recCount + 1, dragCount + 1
+        df['count_ratio'][i] = (1 + dragCount) / (1 + recCount)
+        df['dur_rec'][i], df['dur_drag'][i] = recDur, drgDur
+        df['num_steps'][i] = nSteps
+        df['LH_st_len'][i], df['LF_st_len'][i], df['RH_st_len'][i], df['RF_st_len'][i] = \
+            stepLen[0], stepLen[2], stepLen[1], stepLen[3]
+        df['LH_st_frq'][i], df['LF_st_frq'][i], df['RH_st_frq'][i], df['RF_st_frq'][i] = \
+            cadence[0], cadence[2], cadence[1], cadence[3]
+        df['LHRH_ang'][i], df['LHLF_ang'][i], df['RHRF_ang'][i], df['LFRH_ang'][i], df['RFLH_ang'][i], df['LFRF_ang'][
+            i] = \
+            meanPhi_heur, meanPhi_xL, meanPhi_xR, meanPhi_fLhR, meanPhi_fRhL, meanPhi_fore
+        df['LHRH_rad'][i], df['LHLF_rad'][i], df['RHRF_rad'][i], df['LFRH_rad'][i], df['RFLH_rad'][i], df['LFRF_rad'][
+            i] = \
+            R_heur, R_xL, R_xR, R_fLhR, R_fRhL, R_fore
+        # print(df)
         if saveFlag:
             data = dict.fromkeys(keys,None)
             data['speed'] = speedAll
@@ -284,7 +313,7 @@ def locomotionProfiler(data_path,tThr,speedSmFactor,grid_number,combination,belt
             data['fRStride']=stride[3]
             data['fLStride']=stride[2]
             np.save(fName+'_Profile.npy',data)
-    #return fig
+    return df
 
 
 

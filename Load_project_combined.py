@@ -1,11 +1,19 @@
 import wx
-from Video_analyser import *
-from coordination.constants import *
-from coordination.profiler import *
-from coordination.plotter import *
-from Accel_plotter import *
-from coordination.lateral import *
-from coordination.sticks import *
+#from Video_analyser import *
+#from coordination.constants import *
+#from coordination.profiler import *
+#from coordination.plotter import *
+#from Accel_plotter import *
+#from coordination.lateral import *
+#from coordination.sticks import *
+
+from gait_analysis.Video_analyser import *
+from gait_analysis.coordination.constants import *
+from gait_analysis.coordination.profiler import *
+from gait_analysis.coordination.plotter import *
+from gait_analysis.Accel_plotter import *
+from gait_analysis.coordination.lateral import *
+from gait_analysis.coordination.sticks import *
 
 
 
@@ -226,13 +234,23 @@ class loaded_combined_analysis(wx.Panel):
             belt_speed = -1
 
         n_grid = n_grid + len(self.combination)
-        locomotionProfiler(data_path=self.load_dir.GetPath()+'/labels',tThr=self.tThresh.GetValue(),
+        N_bottom = len(glob.glob(self.load_dir.GetPath() + '/*.avi'))
+        N_lateral = len(glob.glob(self.load_dir.GetPath() + '/lateral_videos/*.avi'))
+        if N_bottom >= N_lateral:
+            df = pd.DataFrame(columns=df_cols, index=range(N_bottom))
+            df[df_cols[1:]] = df[df_cols[1:]].apply(pd.to_numeric)
+        else:
+            df = pd.DataFrame(columns=df_cols, index=range(N_lateral))
+            df[df_cols[1:]] = df[df_cols[1:]].apply(pd.to_numeric)
+
+        df = locomotionProfiler(data_path=self.load_dir.GetPath()+'/labels',tThr=self.tThresh.GetValue(),
                            speedSmFactor=self.SpeedSmFactor.GetValue(),grid_number=n_grid,
-                           combination=self.combination,belt=belt_speed,saveFlag=True,
+                           combination=self.combination,belt=belt_speed,df=df,saveFlag=True,
                            plotFlag=False, log=True,plot_speed=save_speed,plot_acc=save_acc)
 
-        N = len(glob.glob(self.load_dir.GetPath() + '/lateral_videos/*.avi'))
-        df = pd.DataFrame(columns=df_cols, index=range(N))
-        df[df_cols[1:]] = df[df_cols[1:]].apply(pd.to_numeric)
         df = lateral_profiler_combined(self.load_dir.GetPath(), self.scaling_sticks.GetValue(), df)  # Measure joint angles, make stick figures
         df.to_csv(self.load_dir.GetPath() + '/statistics.csv', index=False, float_format='%.4f', na_rep='0')
+
+        dlg = wx.MessageDialog(self, message='Analysis is finished!',
+                               style=wx.OK)
+        dlg.ShowModal()

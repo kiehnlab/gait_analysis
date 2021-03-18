@@ -1,13 +1,21 @@
 import wx
 import os
 import datetime
-from Video_analyser import Video_analyser
-from Video_analyser_combined import Video_analyser_combined
-from Speed_coord import S_C_profiler
-from Load_project import loaded_S_C_profiler
-from Group_analysis import Group_plotter
-from Load_project_lateral import loaded_lateral_profiler
-from Load_project_combined import loaded_combined_analysis
+#from Video_analyser import Video_analyser
+#from Video_analyser_combined import Video_analyser_combined
+#from Speed_coord import S_C_profiler
+#from Load_project import loaded_S_C_profiler
+#from Group_analysis import Group_plotter
+#from Load_project_lateral import loaded_lateral_profiler
+#from Load_project_combined import loaded_combined_analysis
+import gait_analysis
+from gait_analysis.Video_analyser import Video_analyser
+from gait_analysis.Video_analyser_combined import Video_analyser_combined
+from gait_analysis.Speed_coord import S_C_profiler
+from gait_analysis.Load_project import loaded_S_C_profiler
+from gait_analysis.Group_analysis import Group_plotter
+from gait_analysis.Load_project_lateral import loaded_lateral_profiler
+from gait_analysis.Load_project_combined import loaded_combined_analysis
 
 
 class Welcome(wx.Panel):
@@ -48,7 +56,8 @@ class Welcome(wx.Panel):
         )
         sizer.Add(self.select_mode, pos=(4,11),flag=wx.ALIGN_CENTER_HORIZONTAL)
 
-        self.image = wx.StaticBitmap(self,-1,wx.Bitmap('gait1.png',wx.BITMAP_TYPE_ANY))
+        #self.image = wx.StaticBitmap(self, -1, wx.Bitmap('gait1.png', wx.BITMAP_TYPE_ANY))
+        self.image = wx.StaticBitmap(self,-1,wx.Bitmap(gait_analysis.__path__[0] + '/gait1.png',wx.BITMAP_TYPE_ANY))
         sizer.Add(self.image, pos=(5,11),flag=wx.ALIGN_CENTER_HORIZONTAL)
 
 

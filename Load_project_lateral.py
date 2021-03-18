@@ -1,11 +1,19 @@
 import wx
-from Video_analyser import *
-from coordination.constants import *
-from coordination.profiler import *
-from coordination.plotter import *
-from Accel_plotter import *
-from coordination.lateral import *
-from coordination.sticks import *
+#from Video_analyser import *
+#from coordination.constants import *
+#from coordination.profiler import *
+#from coordination.plotter import *
+#from Accel_plotter import *
+#from coordination.lateral import *
+#from coordination.sticks import *
+
+from gait_analysis.Video_analyser import *
+from gait_analysis.coordination.constants import *
+from gait_analysis.coordination.profiler import *
+from gait_analysis.coordination.plotter import *
+from gait_analysis.Accel_plotter import *
+from gait_analysis.coordination.lateral import *
+from gait_analysis.coordination.sticks import *
 
 
 class loaded_lateral_profiler(wx.Panel):
@@ -64,6 +72,8 @@ class loaded_lateral_profiler(wx.Panel):
     def lateral_pdf(self,event):
         N = len(glob.glob(self.load_dir.GetPath() + '/*.avi'))
         df = pd.DataFrame(columns=df_cols, index=range(N))
+        print(df)
         df[df_cols[1:]] = df[df_cols[1:]].apply(pd.to_numeric)
         df = lateral_profiler(self.load_dir.GetPath(), 2, df)  # Measure joint angles, make stick figures
         df.to_csv(self.load_dir.GetPath() + '/statistics.csv', index=False, float_format='%.4f', na_rep='0')
+        print(df)

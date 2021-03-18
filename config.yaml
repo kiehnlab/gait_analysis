@@ -5,7 +5,7 @@ date: Nov15
 multianimalproject:
 
     # Project path (change when moving around)
-project_path: .
+project_path: /home/janek/gait_analysis
 
     # Annotation data set configuration (and individual video cropping parameters)
 video_sets:

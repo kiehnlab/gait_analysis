@@ -8,10 +8,15 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from scipy.stats import circmean
-from coordination.tools import videoMetadata
-from coordination.constants import *
-from coordination.accel import *
-from coordination.coord import bodyPosCoord, bodyCoordCircular, circularPlot, cadencePlot
+from gait_analysis.coordination.tools import videoMetadata
+from gait_analysis.coordination.constants import *
+from gait_analysis.coordination.accel import *
+from gait_analysis.coordination.coord import bodyPosCoord, bodyCoordCircular, circularPlot, cadencePlot
+
+#from coordination.tools import videoMetadata
+#from coordination.constants import *
+#from coordination.accel import *
+#from coordination.coord import bodyPosCoord, bodyCoordCircular, circularPlot, cadencePlot
 ############## Speed analysis ##########
     
 def processDict(dFiles):

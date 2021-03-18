@@ -4,16 +4,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import pdist 
 import pdb
-from coordination.tools import videoMetadata
+from gait_analysis.coordination.tools import videoMetadata
+#from coordination.tools import videoMetadata
 import argparse
 import os
 # import seaborn as sns
 from scipy.stats import norm
 from scipy.signal import find_peaks
-from coordination.coord import iqrMean
+from gait_analysis.coordination.coord import iqrMean
+#from coordination.coord import iqrMean
 from matplotlib.gridspec import GridSpec
-from coordination.sticks import makeStickFigure
-from coordination.constants import *
+from gait_analysis.coordination.sticks import makeStickFigure
+from gait_analysis.coordination.constants import *
+#from coordination.sticks import makeStickFigure
+#from coordination.constants import *
 
 joints = ['hip','knee','ankle','foot']
 colors = ['tab:blue','tab:orange','tab:green','tab:red']
@@ -87,7 +91,9 @@ def lateral_profiler(data_dir,scale,df):
     dest = data_dir+'/all_profiles/'
     if not os.path.exists(dest):
         os.mkdir(dest)
-
+    for i in range(len(files)):
+        df['name'][i] = files[i][9:-4]
+    print(df)
     print("Found %d videos to process"%len(files))
     M = len(bodyparts)
     for fName in files:
@@ -131,8 +137,12 @@ def lateral_profiler(data_dir,scale,df):
         dAng = dAng.mean(1)
         for i in range(len(joints)):
 #           df[joints[i]+'_ang'][df.Name in fName] = dAng[i]
+            print(fName[9:-4])
+            print(dAng[i])
+            # print(df.at[df.name == fName[9:-4],joints[i]+'_ang'])
             df.at[df.name == fName[9:-4],joints[i]+'_ang'] = dAng[i]
         ### Save cycle_angles
+        print(df)
         np.save(dest+fName.replace('.avi','.npy'),cyc_angles)
         makeStickFigure(xval,yval,dist,angles,\
                 meta['dur'],fName,cyc_angles,peaks,swing_idx,scale,dest)
@@ -151,7 +161,9 @@ def lateral_profiler_combined(data_dir,scale,df):
     dest = data_dir+'/allProfiles/'
     if not os.path.exists(dest):
         os.mkdir(dest)
-
+    if df.shape[0] == len(files):
+        for i in range(len(files)):
+            df['name'][i] = files[i][9:-4]
     print("Found %d videos to process"%len(files))
     M = len(bodyparts)
     for fName in files:
@@ -196,6 +208,7 @@ def lateral_profiler_combined(data_dir,scale,df):
         for i in range(len(joints)):
 #           df[joints[i]+'_ang'][df.Name in fName] = dAng[i]
             df.at[df.name == fName[9:-4],joints[i]+'_ang'] = dAng[i]
+        print(df)
         ### Save cycle_angles
         np.save(dest+fName.replace('.avi','.npy'),cyc_angles)
         makeStickFigure(xval,yval,dist,angles,\

@@ -1,10 +1,16 @@
-from coordination.plotter import *
-from coordination.coord import iqrMean, heurCircular
 import warnings
 warnings.filterwarnings("ignore")
-from coordination.tools import videoMetadata
-from coordination.constants import *
-from coordination.accel import *
+#from coordination.plotter import *
+#from coordination.coord import iqrMean, heurCircular
+#from coordination.tools import videoMetadata
+#from coordination.constants import *
+#from coordination.accel import *
+
+from gait_analysis.coordination.plotter import *
+from gait_analysis.coordination.coord import iqrMean, heurCircular
+from gait_analysis.coordination.tools import videoMetadata
+from gait_analysis.coordination.constants import *
+from gait_analysis.coordination.accel import *
 
 
 

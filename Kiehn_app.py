@@ -1,10 +1,16 @@
 import wx
 import os
 import datetime
-from Welcome import Welcome
-from Video_analyser import Video_analyser
-from Speed_coord import S_C_profiler
-from Load_project import loaded_S_C_profiler
+#from Welcome import Welcome
+#from Video_analyser import Video_analyser
+#from Speed_coord import S_C_profiler
+#from Load_project import loaded_S_C_profiler
+import gait_analysis
+from gait_analysis.Welcome import Welcome
+from gait_analysis.Video_analyser import Video_analyser
+from gait_analysis.Speed_coord import S_C_profiler
+from gait_analysis.Load_project import loaded_S_C_profiler
+from gait_analysis.Group_analysis import Group_plotter
 
 
 
@@ -29,7 +35,7 @@ class MainFrame(wx.Frame):
             size=wx.Size(self.gui_size),
             style=wx.RESIZE_BORDER | wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL,
         )
-        self.SetIcon(wx.Icon('mice.jpg'))
+        self.SetIcon(wx.Icon(gait_analysis.__path__[0] + '/mice.jpg'))
         self.SetSizeHints(
             wx.Size(self.gui_size)
         )
@@ -38,6 +44,9 @@ class MainFrame(wx.Frame):
 
         tab1 = Welcome(self.nb,self.gui_size)
         self.nb.AddPage(tab1,'Welcome')
+
+        tab2 = Group_plotter(self.nb,self.gui_size)
+        self.nb.AddPage(tab2,'Trutu')
 
         # tab2 = Video_analyser(self.nb,self.gui_size)
         # self.nb.AddPage(tab2,'Video Analyser')
@@ -53,11 +62,11 @@ class MainFrame(wx.Frame):
         self.panel.SetSizer(self.sizer)
 
 
-app = wx.App()
-frame = MainFrame().Show()
-app.MainLoop()
+# app = wx.App()
+# frame = MainFrame().Show()
+# app.MainLoop()
 
-# def launch_KiehnApp():
-#     app = wx.App()
-#     frame = MainFrame().Show()
-#     app.MainLoop()
+def launch_app():
+    app = wx.App()
+    frame = MainFrame().Show()
+    app.MainLoop()

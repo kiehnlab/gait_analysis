@@ -7,8 +7,11 @@ import warnings
 warnings.filterwarnings("ignore")
 import os
 import matplotlib.pyplot as plt
-from coordination.tools import videoMetadata
-from coordination.constants import *
+from gait_analysis import coordination
+from gait_analysis.coordination.tools import videoMetadata
+from gait_analysis.coordination.constants import *
+#from coordination.tools import videoMetadata
+#from coordination.constants import *
 
 ############# Acceleration analysis #######################
 

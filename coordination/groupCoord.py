@@ -2,15 +2,19 @@ from __future__ import division
 from __future__ import print_function
 import warnings
 warnings.filterwarnings("ignore")
-from stats import groupSteps
-from constants import locKeys
+#from gait_analysis.coordination.stats import groupSteps
+#from gait_analysis.coordination.constants import locKeys
+from coordination.stats import groupSteps
+from coordination.constants import locKeys
 import time
 import argparse
 import pdb
 import pickle
 import os
+#from gait_analysis.coordination.coord import coordProfiler, meanVector, groupPlot
 from coordination.coord import coordProfiler, meanVector, groupPlot
 import numpy as np
+#from gait_analysis.coordination.plotter import processDict
 from coordination.plotter import processDict
 import glob
 import matplotlib.pyplot as plt

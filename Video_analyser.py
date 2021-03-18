@@ -11,8 +11,11 @@ import pdb
 import pickle
 os.environ['DLClight'] = 'True'
 import threading
-from Speed_coord import S_C_profiler
-from Lateral_analysis import lateral_panel
+#from Speed_coord import S_C_profiler
+#from Lateral_analysis import lateral_panel
+
+from gait_analysis.Speed_coord import S_C_profiler
+from gait_analysis.Lateral_analysis import lateral_panel
 
 class analysis_Thread(threading.Thread):
     def __init__(self, threadID, name,analysis, filelist1, labeled_videos):
@@ -247,11 +250,11 @@ class Video_analyser(wx.Panel):
             self.parent.AddPage(page3,'Lateral analysis')
             self.parent.SetSelection(2)
 
-    def get_vid_dir(self,vid_path):
-        a = vid_path.split('/')
-        b = '/'.join(a[-1])
-        b = b+'/'
-        return b
+    # def get_vid_dir(self,vid_path):
+    #     a = vid_path.split('/')
+    #     b = '/'.join(a[-1])
+    #     b = b+'/'
+    #     return b
 
 
 
