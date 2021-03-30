@@ -9,7 +9,7 @@ import os
 #from coord import coordProfiler, meanVector, groupPlot
 from gait_analysis.coordination.constants import locKeys,limbPairs
 import numpy as np
-from tools import processDict
+from gait_analysis.coordination.tools import processDict
 import glob
 import matplotlib.pyplot as plt
 from pycircstat import watson_williams 
