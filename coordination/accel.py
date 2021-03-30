@@ -54,11 +54,12 @@ def countDragReco(nAcc,pAcc,xAxis):
     ### Count drag events
     zIdx = np.where(nAcc==0)[0]
     remIdx = []
-    
+    #pdb.set_trace()
     for i in range(len(zIdx)-1):
         if zIdx[i+1] == (zIdx[i]+1):
             remIdx.append(i+1)
-        uniqDragIdx = np.delete(zIdx,np.array(remIdx))
+        if len(remIdx) > 0:
+            uniqDragIdx = np.delete(zIdx,np.array(remIdx))
 
     zIdx = np.where(pAcc==0)[0]
     remIdx = []

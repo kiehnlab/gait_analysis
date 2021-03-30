@@ -22,9 +22,10 @@ from gait_analysis.coordination.plotter import *
 from gait_analysis.Accel_plotter import *
 from gait_analysis.coordination.plotter import *
 from gait_analysis.coordination.coord import iqrMean, heurCircular
-from gait_analysis.coordination.tools import videoMetadata
+from gait_analysis.coordination.tools import videoMetadata,processDict
 from gait_analysis.coordination.constants import *
 from gait_analysis.coordination.accel import *
+from gait_analysis.coordination.groupCoord import Group_profiler
 
 
 
@@ -59,7 +60,7 @@ class Group_plotter(wx.Panel):
                                                 'Pairwise (3 Groups)', 'Pairwise (4 Groups)'])
         sb_sizer.Add(self.choices)
         border.Add(sb_sizer)
-        sizer.Add(border, pos=(3,1),span=(3,2),flag=wx.EXPAND)
+        sizer.Add(border, pos=(4,1),span=(3,1),flag=wx.EXPAND)
 
 
         # txt = wx.StaticText(self,label='Select type of analysis:')
@@ -79,10 +80,10 @@ class Group_plotter(wx.Panel):
         self.select_animals1 = wx.Button(self, label='Select animals')
         sizer.Add(self.select_animals1, pos=(3, 16), span=(0,9), flag=wx.TOP | wx.EXPAND, border=5)
         self.select_animals1.Bind(wx.EVT_BUTTON, self.select_group1)
-        sizer.Add(self.txt1, pos=(2, 5),span=(0,10),flag=wx.EXPAND|wx.ALIGN_CENTER)
+        sizer.Add(self.txt1, pos=(2, 3),flag=wx.EXPAND|wx.ALIGN_CENTER)
         sizer.Add(self.txt2, pos=(2, 16))
-        sizer.Add(self.txt, pos=(3, 3),span=(0,1),flag=wx.ALIGN_RIGHT)
-        sizer.Add(self.group_name1, pos=(3, 5), span=(0,10), flag=wx.EXPAND)
+        sizer.Add(self.txt, pos=(3, 2),span=(0,1),flag=wx.ALIGN_RIGHT)
+        sizer.Add(self.group_name1, pos=(3, 3), span=(0,12), flag=wx.EXPAND)
         self.group_name1.Enable(False)
         self.select_animals1.Enable(False)
 
@@ -95,8 +96,8 @@ class Group_plotter(wx.Panel):
         self.select_animals2 = wx.Button(self, label='Select animals')
         sizer.Add(self.select_animals2, pos=(4, 16), span=(0,9), flag=wx.TOP | wx.EXPAND, border=5)
         self.select_animals2.Bind(wx.EVT_BUTTON, self.select_group2)
-        sizer.Add(self.txt, pos=(4, 3),span=(0,1),flag=wx.ALIGN_RIGHT)
-        sizer.Add(self.group_name2, pos=(4, 5), span=(0,10), flag=wx.EXPAND)
+        sizer.Add(self.txt, pos=(4, 2),flag=wx.ALIGN_RIGHT)
+        sizer.Add(self.group_name2, pos=(4, 3), span=(0,12), flag=wx.EXPAND)
         self.group_name2.Enable(False)
         self.select_animals2.Enable(False)
 
@@ -109,8 +110,8 @@ class Group_plotter(wx.Panel):
         self.select_animals3 = wx.Button(self, label='Select animals')
         sizer.Add(self.select_animals3, pos=(5, 16), span=(1,9), flag=wx.TOP | wx.EXPAND, border=5)
         self.select_animals3.Bind(wx.EVT_BUTTON, self.select_group3)
-        sizer.Add(self.txt, pos=(5, 3),span=(0,1),flag=wx.ALIGN_RIGHT)
-        sizer.Add(self.group_name3, pos=(5, 5), span=(0,10), flag=wx.EXPAND)
+        sizer.Add(self.txt, pos=(5, 2),flag=wx.ALIGN_RIGHT)
+        sizer.Add(self.group_name3, pos=(5, 3), span=(0,12), flag=wx.EXPAND)
         self.group_name3.Enable(False)
         self.select_animals3.Enable(False)
 
@@ -123,45 +124,112 @@ class Group_plotter(wx.Panel):
         self.select_animals4 = wx.Button(self, label='Select animals')
         sizer.Add(self.select_animals4, pos=(6, 16), span=(1,9), flag=wx.TOP | wx.EXPAND, border=5)
         self.select_animals4.Bind(wx.EVT_BUTTON, self.select_group4)
-        sizer.Add(self.txt, pos=(6, 3),span=(0,1),flag=wx.ALIGN_RIGHT)
-        sizer.Add(self.group_name4, pos=(6, 5), span=(0,10), flag=wx.EXPAND)
+        sizer.Add(self.txt, pos=(6, 2),flag=wx.ALIGN_RIGHT)
+        sizer.Add(self.group_name4, pos=(6,3), span=(0,12), flag=wx.EXPAND)
         self.group_name4.Enable(False)
         self.select_animals4.Enable(False)
 
         self.choices.Bind(wx.EVT_CHOICE,self.check)
 
+        sb1 = wx.StaticBox(self, label='Options:')
+        sb_sizer1 = wx.StaticBoxSizer(sb1, wx.HORIZONTAL)
+        hbox1 = wx.BoxSizer(wx.VERTICAL)
+        hbox2 = wx.BoxSizer(wx.VERTICAL)
+        hbox3 = wx.BoxSizer(wx.HORIZONTAL)
+
+        sb2 = wx.StaticBox(self, label='Select number of steps used for analysis:')
+        sb_sizer2 = wx.StaticBoxSizer(sb2, wx.HORIZONTAL)
+        self.n_step = wx.SpinCtrlDouble(self, value='', min=1, max=150, initial=10, inc=5)
+        sb_sizer2.Add(self.n_step,10,flag=wx.EXPAND,border=5)
+
+        # sizer.Add(border, pos=(10, 2))
 
 
-        sb = wx.StaticBox(self, label='Select number of steps used for analysis:')
-        sb_sizer = wx.StaticBoxSizer(sb, wx.HORIZONTAL)
-        border = wx.BoxSizer()
-        self.n_step = wx.SpinCtrlDouble(self, value='', min=1, max=100, initial=10, inc=1)
-        sb_sizer.Add(self.n_step)
-        border.Add(sb_sizer)
-        sizer.Add(border, pos=(10, 3))
 
-        sb = wx.StaticBox(self, label='Select statistical test:')
-        sb_sizer = wx.StaticBoxSizer(sb, wx.HORIZONTAL)
-        border = wx.BoxSizer()
+        stat_test = wx.StaticBox(self, label='Select statistical test:')
+        stat_test_sizer = wx.StaticBoxSizer(stat_test, wx.HORIZONTAL)
         self.stat_choice = wx.Choice(self, choices=['Watson-Williams test', 'Modified Rayleigh test'])
-        sb_sizer.Add(self.stat_choice)
-        border.Add(sb_sizer)
-        sizer.Add(border, pos=(10,5))
+        stat_test_sizer.Add(self.stat_choice,10,flag=wx.EXPAND,border=5)
 
-        sb = wx.StaticBox(self, label='Select type of sampling:')
-        sb_sizer = wx.StaticBoxSizer(sb, wx.HORIZONTAL)
-        border = wx.BoxSizer()
+        # sizer.Add(border, pos=(10,3))
+        #
+        sampling = wx.StaticBox(self, label='Select type of sampling:')
+        sampling_sizer = wx.StaticBoxSizer(sampling, wx.HORIZONTAL)
         self.sampling_choice = wx.Choice(self, choices=['Random Sampling', 'Density based sampling', 'Tail sampling'])
-        sb_sizer.Add(self.sampling_choice)
-        border.Add(sb_sizer)
-        sizer.Add(border, pos=(10,6))
+        sampling_sizer.Add(self.sampling_choice,10,flag=wx.EXPAND,border=5)
+        # sizer.Add(border, pos=(10,1))
+        #
+        phi_thr = wx.StaticBox(self, label='Select phi threshold:')
+        phi_thr_sizer = wx.StaticBoxSizer(phi_thr, wx.HORIZONTAL)
+        self.phi_thresh = wx.SpinCtrlDouble(self, value='', min=0.1, max=3.0, initial=0.5, inc=0.1)
+        phi_thr_sizer.Add(self.phi_thresh,10,flag=wx.EXPAND,border=5)
+        # sizer.Add(border, pos=(10, 4))
+        #
 
 
 
 
+        hbox1.Add(sampling_sizer,0,flag=wx.EXPAND,border=5)
+        hbox1.Add(sb_sizer2,0,flag=wx.EXPAND,border=5)
+        hbox1.Add(stat_test_sizer,0,flag=wx.EXPAND,border=5)
+        hbox1.Add(phi_thr_sizer,0,flag=wx.EXPAND,border=5)
+
+
+        stride_type = wx.StaticBox(self,label='Select stride type:')
+        stride_type_sizer = wx.StaticBoxSizer(stride_type,wx.VERTICAL)
+        self.check_list1 = wx.CheckListBox(self, choices=['Hindlimb("LH_RH")','Forelimb("LF_RF")',
+                                                          'Homolateral left("LF_LH")'
+                                                          ])
+        # sizer.Add(self.check_list1, pos=(11, 3), flag=wx.ALIGN_RIGHT)
+        self.check_list2 = wx.CheckListBox(self, choices=['Homolateral right("RH_RF")',
+                                                          'Contra-lateral frontleft-hindright("LF_RH")',
+                                                          'Contra-lateral frontright-hindleft("LH_RF")'
+                                                          ])
+        # sizer.Add(self.check_list2, pos=(11, 4), flag=wx.EXPAND)
+
+        self.check_all = wx.CheckBox(self, label='Select all')
+        self.check_all.Bind(wx.EVT_CHECKBOX, self.Select_all)
+        # sizer.Add(self.check_all, pos=(11, 5))
+        stride_type_sizer.Add(self.check_list1, 10, flag=wx.EXPAND, border=5)
+        stride_type_sizer.Add(self.check_list2, 10, flag=wx.EXPAND, border=5)
+        stride_type_sizer.Add(self.check_all, 10, flag=wx.ALIGN_RIGHT | wx.ALIGN_TOP, border=5)
+        hbox2.Add(stride_type_sizer,0,border=5)
+
+        sb_sizer1.Add(hbox1)
+        sb_sizer1.Add(hbox2)
+        sizer.Add(sb_sizer1,pos=(10,3),span=(0,12),flag=wx.EXPAND)
+
+        test = wx.Button(self,label='Test')
+        test.Bind(wx.EVT_BUTTON,self.test)
+        sizer.Add(test,pos=(12,16),span=(0,9),flag=wx.EXPAND)
 
         self.SetSizer(sizer)
         sizer.Fit(self)
+
+    def test(self,event):
+        groups = [self.group1,self.group2,self.group3,self.group4]
+        names = [self.group_name1.GetValue(),self.group_name2.GetValue(),
+                 self.group_name3.GetValue(),self.group_name4.GetValue()]
+        if self.check_all.IsChecked() == True:
+            combination = [i for i in range(6)]
+        else:
+            check1 = [i for i in self.check_list1.GetChecked()]
+            check2 = [i + 3 for i in self.check_list2.GetChecked()]
+            combination = check1 + check2
+        Group_profiler(groups,names,combination,n_steps=int(self.n_step.GetValue()),phi_thr=self.phi_thresh.GetValue(),test=self.stat_choice.GetStringSelection())
+        dlg = wx.MessageDialog(self,message='Group analysis finished!',style=wx.OK)
+        dlg.ShowModal()
+
+    def Select_all(self,event):
+        if self.check_all.IsChecked() == True:
+            for i in range(3):
+                self.check_list1.Check(i,False)
+                self.check_list2.Check(i,False)
+            self.check_list1.Enable(False)
+            self.check_list2.Enable(False)
+        else:
+            self.check_list1.Enable(True)
+            self.check_list2.Enable(True)
 
     def select_group1(self, event):
 

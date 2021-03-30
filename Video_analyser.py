@@ -13,9 +13,10 @@ os.environ['DLClight'] = 'True'
 import threading
 #from Speed_coord import S_C_profiler
 #from Lateral_analysis import lateral_panel
-
+import gait_analysis
 from gait_analysis.Speed_coord import S_C_profiler
 from gait_analysis.Lateral_analysis import lateral_panel
+from gait_analysis.Group_analysis import Group_plotter
 
 class analysis_Thread(threading.Thread):
     def __init__(self, threadID, name,analysis, filelist1, labeled_videos):
@@ -23,9 +24,9 @@ class analysis_Thread(threading.Thread):
         self.threadID = threadID
         self.name = name
         if analysis == 'Bottom view':
-            self.config = './config.yaml'
+            self.config = gait_analysis.__path__[0] + '/config.yaml'
         elif analysis == 'Lateral view':
-            self.config = './lateral_analysis/config.yaml'
+            self.config = gait_analysis.__path__[0] + '/lateral_analysis/config.yaml'
         self.filelist1 = filelist1
         self.labeled_videos = labeled_videos
     def run(self):

@@ -10,6 +10,7 @@ from gait_analysis.coordination.tools import videoMetadata
 #from coordination.tools import videoMetadata
 #from speed import estimateSpeed
 from gait_analysis.coordination.constants import *
+from gait_analysis.coordination.stats import *
 #from coordination.constants import *
 from scipy.stats import circmean
 from matplotlib.gridspec import GridSpec
@@ -44,7 +45,7 @@ params = {'font.size': 14,
 matplotlib.rcParams.update(params)
 
 
-def groupPlot(phi,r,fig,gNames):
+def groupPlot(phi,r,fig,gNames,col):
 
 #    if day == 'baseline':
 #        gColors = sod_colors
@@ -58,83 +59,131 @@ def groupPlot(phi,r,fig,gNames):
 #    else:
 ##        gColors = sodcno_colors
 #        fills = sodcno_fill
-    
+#     pdb.set_trace()
     ax = fig.add_subplot(111,polar=True)
     ax.set_rlim(0,1.1)
-    ax.spines['polar'].set_visible(False)
-    ax.set_axisbelow(True)
+    # ax.spines['polar'].set_visible(False)
+    # ax.set_axisbelow(True)
     ax.set_theta_offset(np.pi/2)
-    ax.grid(linewidth=3)
-#    pdb.set_trace()
+    # ax.grid(linewidth=3)
+    # pdb.set_trace()
     for i in range(len(phi)):
-        lColor = colors[np.where(days==gNames[i].split('_')[0])[0][0]]
-        lFill = fillstyles[np.where(groups==gNames[i].split('_')[1])[0][0]]
-        ax.plot((10,10),color=lColor,label=gNames[i].replace('_',' '),
+        # lColor = colors[np.where(days==gNames[i].split('_')[0])[0][0]]
+        # lFill = fillstyles[np.where(groups==gNames[i].split('_')[1])[0][0]]
+        lFill = fillstyles[1]
+        ax.plot((10,10),color=col[i],label=gNames[i].replace('_',' '),
                 linestyle='none',
                marker='>',fillstyle=lFill,markersize=10)
-        ax.annotate("",xytext=(0.0,0.0),xy=(phi[i],r[i]*1.05),
-                   arrowprops=dict(color=lColor,width=0.2,lw=3,fill=(lFill=='full')))
-    meanPhi = circmean(phi)
-    meanR = np.mean(r)
+        ax.annotate("",xytext=(0.0,0.0),xy=(phi[i],r[i]),
+                   arrowprops=dict(color=col[i],width=0.2,lw=3,fill=(lFill=='full')))
+    # meanPhi = circmean(phi)
+    # meanR = np.mean(r)
 
 #    ax.plot((0,0),color='firebrick',label='Mean vector')
 #    ax.annotate("",xytext=(0.0,0.0),xy=(meanPhi,meanR*1.05),
 #               arrowprops=dict(color='firebrick',lw=4,width=0.75))
-    return fig, meanPhi, meanR
+    return fig
 
-def meanVector(data,files,fig,cScheme,gName,key='h',scatter=False):
-    pKey = 'phi_'+key
-    rKey = 'R_'+key
-    N = len(data[pKey])
+def meanVector(phi,files,fig,cScheme,gName,idx,scatter=False):
+#    pdb.set_trace()
+    N = phi.shape[0]
     groupPhi = np.zeros(N)
     groupR = np.zeros(N)
-#    pdb.set_trace()
-    files = np.array([f.split('/')[-1][:20] for f in files])
-    uniq = np.unique(files)
+#    ax = fig.add_subplot(gs[pIdx//nR,pIdx%nC],polar=True)
     ax = fig.add_subplot(111,polar=True)
-    ax.set_rlim(0,1.1)
-    ax.spines['polar'].set_visible(False)
-    ax.set_axisbelow(True)
-    ax.set_theta_offset(np.pi/2)
-    ax.grid(linewidth=2)
 
-    lColor = colors[np.where(days==gName.split('_')[0])[0][0]]
-    lFill = fillstyles[np.where(groups==gName.split('_')[1])[0][0]]
+    # ax.set_rlim(0,1.1)
+    # ax.spines['polar'].set_visible(False)
+    # ax.set_axisbelow(True)
+    # ax.set_theta_offset(np.pi/2)
+    # ax.grid(linewidth=2)
 
+    # pdb.set_trace()
 
-    for i in range(N): 
-        phi = data[pKey][i]
-        r = data[rKey][i]
-        groupPhi[i] = circmean(phi)
-        groupR[i] = np.mean(r)
+    # lColor = colors[np.where(days==gName.split('_')[0])[0][0]]
+    # lFill = fillstyles[np.where(groups==gName.split('_')[1])[0][0]]
 
-    for i in range(len(uniq)):
-        animPhi = circmean(groupPhi[files==uniq[i]])
-        animR = np.mean(groupR[files==uniq[i]])
-        if scatter:
-#            pdb.set_trace()
-            if lFill == 'full':
-                ax.plot((0,animPhi),(0,animR),color=lColor,marker='o',
-                        fillstyle=lFill,linestyle='', markeredgecolor='white', markersize=12) 
-            else:
-                ax.plot((0,animPhi),(0,animR),color=lColor,marker='o',
-                        fillstyle=lFill,linestyle='', markersize=12) 
+    lFill = 'full'
 
-        else:
-            ax.annotate("",xytext=(0.0,0.0),xy=(animPhi,animR*1.05),
-                   arrowprops=dict(color='dimgray',width=0.2,lw=2))
-#        ax.plot((0,groupPhi[i]),(0,r),color='lightgrey',alpha=0.1,linewidth=4) 
+    for i in range(N):
+        animPhi, animR = circular_mean(phi[i])
+        groupPhi[i], groupR[i] = animPhi, animR
+        # pdb.set_trace()
 
-    meanPhi = circmean(groupPhi)
-    meanR = np.mean(groupR)
+        ax.plot((0,animPhi),(0,animR),color=cScheme,marker='o',fillstyle=lFill,linestyle='', markeredgecolor='white', markersize=12)
+            # pdb.set_trace()
+        # else:
+        #     ax.annotate("",xytext=(0.0,0.0),xy=(animPhi,animR*1.01),
+        #            arrowprops=dict(color='dimgray',width=0.2,lw=2))
+    ax.set_title('Angles for '+locKeys[idx]+' limb coordination')
+    meanPhi, meanR = circular_mean(groupPhi,r=groupR)
 
-    ax.annotate("",xytext=(0.0,0.0),xy=(meanPhi,meanR*1.05),
-               arrowprops=dict(color=lColor,lw=3,
-                               width=0.75,fill=(lFill=='full')))
-#    ax.plot((0,meanPhi),(0,meanR),color='firebrick',linewidth=6) 
+    ax.plot((10,10),color=cScheme,label=gName,
+                linestyle='none',
+               marker='>',fillstyle=lFill,markersize=10)
+    ax.annotate("",xytext=(0.0,0.0),xy=(meanPhi,meanR),
+                   arrowprops=dict(color=cScheme,width=0.2,lw=3,fill=True))
 
+    # pdb.set_trace()
+    # ax.annotate("",xytext=(0.0,0.0),xy=(meanPhi,meanR*1.01),
+    #            arrowprops=dict(color=cScheme,lw=3,
+    #                            width=0.75,fill=(lFill=='full')))
 
     return fig, meanPhi, meanR
+
+# def meanVector(data,files,fig,cScheme,gName,key='h',scatter=False):
+#     pKey = 'phi_'+key
+#     rKey = 'R_'+key
+#     N = len(data[pKey])
+#     groupPhi = np.zeros(N)
+#     groupR = np.zeros(N)
+# #    pdb.set_trace()
+#     files = np.array([f.split('/')[-1][:20] for f in files])
+#     uniq = np.unique(files)
+#     ax = fig.add_subplot(111,polar=True)
+#     ax.set_rlim(0,1.1)
+#     ax.spines['polar'].set_visible(False)
+#     ax.set_axisbelow(True)
+#     ax.set_theta_offset(np.pi/2)
+#     ax.grid(linewidth=2)
+#
+#     lColor = colors[np.where(days==gName.split('_')[0])[0][0]]
+#     lFill = fillstyles[np.where(groups==gName.split('_')[1])[0][0]]
+#
+#
+#     for i in range(N):
+#         phi = data[pKey][i]
+#         r = data[rKey][i]
+#         groupPhi[i] = circmean(phi)
+#         groupR[i] = np.mean(r)
+#
+#     for i in range(len(uniq)):
+#         animPhi = circmean(groupPhi[files==uniq[i]])
+#         animR = np.mean(groupR[files==uniq[i]])
+#         if scatter:
+# #            pdb.set_trace()
+#             if lFill == 'full':
+#                 ax.plot((0,animPhi),(0,animR),color=lColor,marker='o',
+#                         fillstyle=lFill,linestyle='', markeredgecolor='white', markersize=12)
+#             else:
+#                 ax.plot((0,animPhi),(0,animR),color=lColor,marker='o',
+#                         fillstyle=lFill,linestyle='', markersize=12)
+#
+#         else:
+#             ax.annotate("",xytext=(0.0,0.0),xy=(animPhi,animR*1.05),
+#                    arrowprops=dict(color='dimgray',width=0.2,lw=2))
+# #        ax.plot((0,groupPhi[i]),(0,r),color='lightgrey',alpha=0.1,linewidth=4)
+#
+#     meanPhi = circmean(groupPhi)
+#     meanR = np.mean(groupR)
+#
+#     ax.annotate("",xytext=(0.0,0.0),xy=(meanPhi,meanR*1.05),
+#                arrowprops=dict(color=lColor,lw=3,
+#                                width=0.75,fill=(lFill=='full')))
+# #    ax.plot((0,meanPhi),(0,meanR),color='firebrick',linewidth=6)
+#
+#
+#     return fig, meanPhi, meanR
 
 def iqrMean(data):
     upper_quartile = np.percentile(data, 75)
@@ -145,36 +194,57 @@ def iqrMean(data):
     
     return result.mean()
 
-def heurCircular(xAxis,stride,sMean,idxFlag=False):
+def heurCircular(xAxis,stride,peaks):
 
-    idx = np.where(np.diff(stride > sMean)==True)[0]
-
+#    peaks = measureCycles(stride)[1]
     stride = 2*(stride-stride.min())/ (stride.max()-stride.min()) - 1
 
-    if len(idx) % 2 != 0: 
-        idx = idx[:-1]
-    newIdx = idx.reshape(-1,2)[:,0]
-    N = len(newIdx)-1
-    phi = np.zeros(N)
+    N = len(peaks)
+    phi = np.zeros(N-1)
 
-    for i in range(1,N+1):
+    for i in range(N-1):
 
-        lIdx = newIdx[i-1]
-        uIdx = newIdx[i]
+        lIdx = peaks[i]
+        uIdx = peaks[i+1]
         y = stride[lIdx:uIdx]
         x = np.linspace(0,2*np.pi,len(y))
-        phi[i-1] = ((4-np.trapz(y,x)) * np.pi/4) #% 2*np.pi
+        phi[i] = ((4-np.trapz(y,x)) * np.pi/4)
 
-#    pdb.set_trace()
-    X = np.cos(phi).mean()
-    Y = np.sin(phi).mean()
-    r = np.sqrt(X**2+Y**2)
-#    meanPhi = circmean(phi)
-    meanPhi = np.arctan2(Y,X)
-    if idxFlag: 
-        return phi, r, meanPhi, N, idx
-    else:
-        return phi, r, meanPhi, N
+    meanPhi, r = circular_mean(phi)
+    return phi, r, meanPhi
+
+
+
+# def heurCircular(xAxis,stride,sMean,idxFlag=False):
+#
+#     idx = np.where(np.diff(stride > sMean)==True)[0]
+#
+#     stride = 2*(stride-stride.min())/ (stride.max()-stride.min()) - 1
+#
+#     if len(idx) % 2 != 0:
+#         idx = idx[:-1]
+#     newIdx = idx.reshape(-1,2)[:,0]
+#     N = len(newIdx)-1
+#     phi = np.zeros(N)
+#
+#     for i in range(1,N+1):
+#
+#         lIdx = newIdx[i-1]
+#         uIdx = newIdx[i]
+#         y = stride[lIdx:uIdx]
+#         x = np.linspace(0,2*np.pi,len(y))
+#         phi[i-1] = ((4-np.trapz(y,x)) * np.pi/4) #% 2*np.pi
+#
+# #    pdb.set_trace()
+#     X = np.cos(phi).mean()
+#     Y = np.sin(phi).mean()
+#     r = np.sqrt(X**2+Y**2)
+# #    meanPhi = circmean(phi)
+#     meanPhi = np.arctan2(Y,X)
+#     if idxFlag:
+#         return phi, r, meanPhi, N, idx
+#     else:
+#         return phi, r, meanPhi, N
 
 def bodyCoordCircular(lStride, rStride):
 

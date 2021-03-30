@@ -79,19 +79,20 @@ def estimateSpeed(ipFile,beltSpeed,meta,vid,speedSmFactor,plotSpeed=True):
     return speedAll, speedMean, avgSpeed, speedStd
     
 
-def limbCoord(str_0,str_1,movDur):
+def limbCoord(str_0,str_1,movDur,peaks):
 
 #        lStride, rStride = stride[0], stride[1]
-        str_0_mean = iqrMean(str_0)
-        str_1_mean = iqrMean(str_1)
+#         str_0_mean = iqrMean(str_0)
+#         str_1_mean = iqrMean(str_1)
 
-        sMean = iqrMean(str_0) - iqrMean(str_1)
+        # sMean = iqrMean(str_0) - iqrMean(str_1)
         relStride = str_0 - str_1
         T = len(relStride)
         xAxis = np.linspace(0,movDur,T)
-        phi, R, meanPhi, nSteps = heurCircular(xAxis,relStride,sMean)
+        # phi, R, meanPhi, nSteps = heurCircular(xAxis,relStride,sMean)
+        phi, R, meanPhi = heurCircular(xAxis,relStride,peaks)
 
-        return phi, R, meanPhi, nSteps
+        return phi, R, meanPhi
 
 def plotSpeedProfile(vid, meta, beltSpeed, avgSpeed,
                      speedMean, speedStd, fig, gs,row):
@@ -123,7 +124,6 @@ def locomotionProfiler(data_path,tThr,speedSmFactor,grid_number,combination,belt
     """
     os.chdir(data_path)
     vidFiles = sorted(glob.glob('../*.avi'))
-    print(vidFiles)
     vidFiles.extend(sorted(glob.glob('../*.mp4')))
     if not os.path.exists(spProfLoc):
         os.mkdir(spProfLoc)
@@ -140,7 +140,6 @@ def locomotionProfiler(data_path,tThr,speedSmFactor,grid_number,combination,belt
     for i in range(len(vidFiles)):
 
         vid = vidFiles[i]
-        print(vid)
         if vid.split('.')[-1] == 'avi':
             ipFile = glob.glob(vid.split('/')[1].split('.avi')[0]+'*.h5')[0]
             fName = spProfLoc+vid.split('.avi')[0].split('..')[1]
@@ -172,23 +171,44 @@ def locomotionProfiler(data_path,tThr,speedSmFactor,grid_number,combination,belt
         cadence, stride, stepLen, movDur, \
                 bodyLen,locHist = bodyPosCoord(ipFile, speedMean, avgSpeed,speedSmFactor, meta)
 
+        # ### Coordination of l-r hind limbs
+        # phi_heur, R_heur, meanPhi_heur, nSteps = limbCoord(stride[0],stride[1],movDur)
+        #
+        # ### Coordination of l-r fore limbs
+        # phi_fore, R_fore, meanPhi_fore, nSteps_fore = limbCoord(stride[2],stride[3],movDur)
+        #
+        # ### Coordination of f-h right limbs
+        # phi_xR, R_xR, meanPhi_xR, nSteps_xR = limbCoord(stride[1],stride[3],movDur)
+        #
+        # ### Coordination of f-h left limbs
+        # phi_xL, R_xL, meanPhi_xL,nSteps_xL = limbCoord(stride[0],stride[2],movDur)
+        #
+        # ### Coordination of fL-hR left limbs
+        # phi_fLhR, R_fLhR, meanPhi_fLhR,nSteps_fLhR = limbCoord(stride[2],stride[1],movDur)
+        #
+        # ### Coordination of fR-hL left limbs
+        # phi_fRhL, R_fRhL, meanPhi_fRhL,nSteps_fRhL = limbCoord(stride[3],stride[0],movDur)
+
+        # Get step cycles from hind limbs
+        nSteps, peaks = measureCycles(stride[0]-stride[1])
+
         ### Coordination of l-r hind limbs
-        phi_heur, R_heur, meanPhi_heur, nSteps = limbCoord(stride[0],stride[1],movDur)
+        phi_heur, R_heur, meanPhi_heur = limbCoord(stride[0],stride[1],movDur,peaks)
 
         ### Coordination of l-r fore limbs
-        phi_fore, R_fore, meanPhi_fore, nSteps_fore = limbCoord(stride[2],stride[3],movDur)
+        phi_fore, R_fore, meanPhi_fore = limbCoord(stride[2],stride[3],movDur,peaks)
 
         ### Coordination of f-h right limbs
-        phi_xR, R_xR, meanPhi_xR, nSteps_xR = limbCoord(stride[1],stride[3],movDur)
+        phi_xR, R_xR, meanPhi_xR = limbCoord(stride[1],stride[3],movDur,peaks)
 
         ### Coordination of f-h left limbs
-        phi_xL, R_xL, meanPhi_xL,nSteps_xL = limbCoord(stride[0],stride[2],movDur)
+        phi_xL, R_xL, meanPhi_xL = limbCoord(stride[0],stride[2],movDur,peaks)
 
         ### Coordination of fL-hR left limbs
-        phi_fLhR, R_fLhR, meanPhi_fLhR,nSteps_fLhR = limbCoord(stride[2],stride[1],movDur)
+        phi_fLhR, R_fLhR, meanPhi_fLhR = limbCoord(stride[2],stride[1],movDur,peaks)
 
         ### Coordination of fR-hL left limbs
-        phi_fRhL, R_fRhL, meanPhi_fRhL,nSteps_fRhL = limbCoord(stride[3],stride[0],movDur)
+        phi_fRhL, R_fRhL, meanPhi_fRhL = limbCoord(stride[3],stride[0],movDur,peaks)
 
         aAxis = np.linspace(0, movDur, accMean.shape[0])
         # pdb.set_trace()
@@ -259,7 +279,6 @@ def locomotionProfiler(data_path,tThr,speedSmFactor,grid_number,combination,belt
                           R_heur,(cadence[0]),\
                           cadence[1],cadence[2],cadence[3],stepLen[0],\
                          stepLen[1],stepLen[2],stepLen[3]),file=f)
-        print(df['name'])
         df['name'][i] = vid.split('/')[-1].split('.')[0]
         df['bodyLen'][i] = bodyLen
         df['duration'][i], df['mov_dur'][i] = meta['dur'], movDur
@@ -270,7 +289,7 @@ def locomotionProfiler(data_path,tThr,speedSmFactor,grid_number,combination,belt
         df['num_rec'][i], df['num_drag'][i] = recCount + 1, dragCount + 1
         df['count_ratio'][i] = (1 + dragCount) / (1 + recCount)
         df['dur_rec'][i], df['dur_drag'][i] = recDur, drgDur
-        df['num_steps'][i] = nSteps
+        # df['num_steps'][i] = nSteps
         df['LH_st_len'][i], df['LF_st_len'][i], df['RH_st_len'][i], df['RF_st_len'][i] = \
             stepLen[0], stepLen[2], stepLen[1], stepLen[3]
         df['LH_st_frq'][i], df['LF_st_frq'][i], df['RH_st_frq'][i], df['RF_st_frq'][i] = \
@@ -281,7 +300,6 @@ def locomotionProfiler(data_path,tThr,speedSmFactor,grid_number,combination,belt
         df['LHRH_rad'][i], df['LHLF_rad'][i], df['RHRF_rad'][i], df['LFRH_rad'][i], df['RFLH_rad'][i], df['LFRF_rad'][
             i] = \
             R_heur, R_xL, R_xR, R_fLhR, R_fRhL, R_fore
-        # print(df)
         if saveFlag:
             data = dict.fromkeys(keys,None)
             data['speed'] = speedAll
@@ -294,7 +312,7 @@ def locomotionProfiler(data_path,tThr,speedSmFactor,grid_number,combination,belt
             data['lStLen'] = stepLen[0]
             data['frStLen'] = stepLen[3]
             data['flStLen'] = stepLen[2]
-            data['nSteps']=nSteps
+            # data['nSteps']=nSteps
             data['phi_h']=phi_heur
             data['R_h'] = R_heur
             data['phi_f']=phi_fore

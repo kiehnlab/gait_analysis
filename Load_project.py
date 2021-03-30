@@ -10,6 +10,7 @@ from gait_analysis.coordination.constants import *
 from gait_analysis.coordination.profiler import *
 from gait_analysis.coordination.plotter import *
 from gait_analysis.Accel_plotter import *
+from gait_analysis.Group_analysis import *
 
 class loaded_S_C_profiler(wx.Panel):
     def __init__(self, parent, gui_size):
@@ -288,8 +289,20 @@ class loaded_S_C_profiler(wx.Panel):
             belt_speed = -1
 
         n_grid = n_grid + len(self.combination)
-        locomotionProfiler(data_path=self.load_dir.GetPath()+'/labels',tThr=self.tThresh.GetValue(),speedSmFactor=self.SpeedSmFactor.GetValue(),grid_number = n_grid,combination=self.combination,belt=belt_speed,saveFlag=True, plotFlag=False, log=True,plot_speed=save_speed,plot_acc = save_acc)
 
+        N_bottom = len(glob.glob(self.load_dir.GetPath() + '/*.avi'))
+        df = pd.DataFrame(columns=df_cols, index=range(N_bottom))
+        df[df_cols[1:]] = df[df_cols[1:]].apply(pd.to_numeric)
+
+        df = locomotionProfiler(data_path=self.load_dir.GetPath()+'/labels',tThr=self.tThresh.GetValue(),speedSmFactor=self.SpeedSmFactor.GetValue(),grid_number = n_grid,
+                           combination=self.combination,belt=belt_speed,df=df,saveFlag=True, plotFlag=False, log=True,plot_speed=save_speed,plot_acc = save_acc)
+
+
+        dlg = wx.MessageDialog(self, message='Plots are created! Continue to group analysis!', style=wx.OK)
+        dlg.ShowModal()
+        page3 = Group_plotter(self.parent, self.gui_size)
+        self.parent.AddPage(page3, 'Group analysis')
+        self.parent.SetSelection(2)
 
     # def locomotion(self,event):
     #

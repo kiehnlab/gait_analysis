@@ -45,8 +45,8 @@ class MainFrame(wx.Frame):
         tab1 = Welcome(self.nb,self.gui_size)
         self.nb.AddPage(tab1,'Welcome')
 
-        tab2 = Group_plotter(self.nb,self.gui_size)
-        self.nb.AddPage(tab2,'Trutu')
+        # tab2 = Group_plotter(self.nb,self.gui_size)
+        # self.nb.AddPage(tab2,'Trutu')
 
         # tab2 = Video_analyser(self.nb,self.gui_size)
         # self.nb.AddPage(tab2,'Video Analyser')

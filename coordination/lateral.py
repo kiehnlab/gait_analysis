@@ -86,14 +86,12 @@ def lateral_profiler(data_dir,scale,df):
 
     files = sorted(glob.glob(data_dir+'/*.avi'))
     files = [f.split('/')[-1] for f in files]
-
     data_dir = data_dir.replace('lateral/','')
-    dest = data_dir+'/all_profiles/'
+    dest = data_dir+'/allProfiles/'
     if not os.path.exists(dest):
         os.mkdir(dest)
     for i in range(len(files)):
         df['name'][i] = files[i][9:-4]
-    print(df)
     print("Found %d videos to process"%len(files))
     M = len(bodyparts)
     for fName in files:
@@ -137,12 +135,9 @@ def lateral_profiler(data_dir,scale,df):
         dAng = dAng.mean(1)
         for i in range(len(joints)):
 #           df[joints[i]+'_ang'][df.Name in fName] = dAng[i]
-            print(fName[9:-4])
-            print(dAng[i])
             # print(df.at[df.name == fName[9:-4],joints[i]+'_ang'])
             df.at[df.name == fName[9:-4],joints[i]+'_ang'] = dAng[i]
         ### Save cycle_angles
-        print(df)
         np.save(dest+fName.replace('.avi','.npy'),cyc_angles)
         makeStickFigure(xval,yval,dist,angles,\
                 meta['dur'],fName,cyc_angles,peaks,swing_idx,scale,dest)
@@ -208,7 +203,6 @@ def lateral_profiler_combined(data_dir,scale,df):
         for i in range(len(joints)):
 #           df[joints[i]+'_ang'][df.Name in fName] = dAng[i]
             df.at[df.name == fName[9:-4],joints[i]+'_ang'] = dAng[i]
-        print(df)
         ### Save cycle_angles
         np.save(dest+fName.replace('.avi','.npy'),cyc_angles)
         makeStickFigure(xval,yval,dist,angles,\

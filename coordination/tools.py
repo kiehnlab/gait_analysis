@@ -10,6 +10,26 @@ import matplotlib.pyplot as plt
 from gait_analysis.coordination.constants import *
 #from coordination.constants import *
 
+def processDict(dFiles,phiThresh=0):
+    allData = allData=dict.fromkeys(keys,[])
+
+    for dFname in dFiles:
+        data = np.load(dFname,allow_pickle=True).item()
+        ### Choose diagonal steps that are similar
+        if phiThresh > 0:
+            idx = np.where(np.abs(data['phi_fRhL']-data['phi_fLhR']) < phiThresh)[0]
+            data['phi_fRhL'] = data['phi_fRhL'][idx]
+            data['phi_fLhR'] = data['phi_fLhR'][idx]
+            data['phi_xL'] = data['phi_xL'][idx]
+            data['phi_xR'] = data['phi_xR'][idx]
+            data['phi_h'] = data['phi_h'][idx]
+            data['phi_f'] = data['phi_f'][idx]
+
+        for key,value in data.items():
+            allData[key] = allData[key]+[value]
+
+    return allData
+
 def videoMetadata(vid):
     meta = {}
     meta['dur'] = np.float(pex.information(vid)['Composite:Duration'].replace(' s',''))

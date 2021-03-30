@@ -38,7 +38,8 @@ keys=['speed','lCad','rCad','flCad','frCad','avg','rStLen','lStLen',
       'movDur',  'rStride','lStride','fRStride','fLStride']
 colors=['black','blue','green','grey']
 legends=['1st','2nd','3rd','Mean']
-locKeys = ['LH_RH','LH_LF','RH_RF','LF_RH','RF_LH']
+locKeys = ['LH_RH','LF_RF','LH_LF','RH_RF','LF_RH','RF_LH']
+limbPairs = ['h','f','xL','xR','fLhR','fRhL']
 
 ## For making video overlays
 frameRate = 24

@@ -14,6 +14,7 @@ from gait_analysis.coordination.plotter import *
 from gait_analysis.Accel_plotter import *
 from gait_analysis.coordination.lateral import *
 from gait_analysis.coordination.sticks import *
+from gait_analysis.Group_analysis import Group_plotter
 
 class combined_profiler(wx.Panel):
     def __init__(self, parent, gui_size,proj_path):
@@ -170,20 +171,40 @@ class combined_profiler(wx.Panel):
         txt3.SetFont(font)
         sizer.Add(txt3, pos=(13, 0), flag=wx.TOP)
 
-        sb = wx.StaticBox(self, label='Select scaling for stick plots')
-        self.boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
+        # sb = wx.StaticBox(self, label='Select scaling for stick plots')
+        # self.boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
+        # hbox1 = wx.BoxSizer(wx.HORIZONTAL)
+        #
+        # self.scaling_sticks = wx.SpinCtrlDouble(self, value='', min=1, max=10, initial=2, inc=1)
+        # hbox1.Add(self.scaling_sticks)
+        #
+        # self.boxsizer.Add(hbox1)
+        # sizer.Add(self.boxsizer, pos=(14, 1), flag=wx.EXPAND)
+
+        sb = wx.StaticBox(self, label='Options:')
+        boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
         hbox1 = wx.BoxSizer(wx.HORIZONTAL)
 
+        scal_sb = wx.StaticBox(self, label='Select scaling for stick plots')
+        scal_sb_sizer = wx.StaticBoxSizer(scal_sb, wx.HORIZONTAL)
         self.scaling_sticks = wx.SpinCtrlDouble(self, value='', min=1, max=10, initial=2, inc=1)
-        hbox1.Add(self.scaling_sticks)
+        scal_sb_sizer.Add(self.scaling_sticks, 0, flag=wx.ALIGN_LEFT, border=5)
+        # hbox1.Add(self.scaling_sticks)
 
-        self.boxsizer.Add(hbox1)
-        sizer.Add(self.boxsizer, pos=(14, 1), flag=wx.EXPAND)
+        temp_sb = wx.StaticBox(self, label='Perform temporal synchronization?')
+        temp_sb_sizer = wx.StaticBoxSizer(temp_sb, wx.VERTICAL)
+        self.temp_synch = wx.RadioBox(self, choices=['Yes', 'No'])
+        temp_sb_sizer.Add(self.temp_synch, 0, flag=wx.ALIGN_CENTER, border=5)
+        # sizer.Add(self.temp_synch,pos=(4,1),flag=wx.EXPAND)
+        # self.boxsizer.Add(hbox1)
 
-
+        hbox1.Add(scal_sb_sizer, 0, flag=wx.EXPAND, border=5)
+        hbox1.Add(temp_sb_sizer, 10, flag=wx.EXPAND, border=5)
+        boxsizer.Add(hbox1)
+        sizer.Add(boxsizer, pos=(14, 1),span=(0,2), flag=wx.EXPAND)
 
         run_button = wx.Button(self,label='Create final pdfs')
-        sizer.Add(run_button,pos=(14,2),flag=wx.ALIGN_RIGHT | wx.ALIGN_BOTTOM)
+        sizer.Add(run_button,pos=(15,2),flag=wx.ALIGN_RIGHT | wx.ALIGN_BOTTOM)
         run_button.Bind(wx.EVT_BUTTON,self.run_analysis)
 
 
@@ -250,3 +271,8 @@ class combined_profiler(wx.Panel):
         df = lateral_profiler_combined(self.proj_path, self.scaling_sticks.GetValue(), df)  # Measure joint angles, make stick figures
         print(df)
         df.to_csv(self.proj_path + '/statistics.csv', index=False, float_format='%.4f', na_rep='0')
+        dlg = wx.MessageDialog(self,message='Analysis is finished! Proceed to Group analysis.',style=wx.OK)
+        dlg.ShowModal()
+        page3 = Group_plotter(self.parent, self.gui_size)
+        self.parent.AddPage(page3, 'Group analysis')
+        self.parent.SetSelection(2)
