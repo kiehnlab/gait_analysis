@@ -9,7 +9,7 @@ This tool is designed to analyse bottom and lateral videos. Analysis for bottom 
 2. Go into the directory in which "gait_analysis" tool is located.
 3. Start up the tool by typing 'python -m gait_analysis'
 <p align="center">
-![lotenet](media/start_up.png)
+<img src = media/start_up.png>
 </p>
 You will land on the main page of our tool. From here you can decide if you wish to start a new project, load an existing one or just perform a group analysis. 
 <p align="center">
