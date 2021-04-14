@@ -10,13 +10,13 @@ This tool is designed to analyse bottom and lateral videos. Analysis for bottom 
 3. Start up the tool by typing 'python -m gait_analysis'
 
 <p align="center">
-<img src = media/start_up.png, title='start'>
+<img src = media/start_up.png>
 </p>
 
 You will land on the main page of our tool. From here you can decide if you wish to start a new project, load an existing one or just perform a group analysis. 
 
 <p align="center">
-<img src = (media/project_type.png),title='project'>
+<img src = (media/project_type.png)>
 </p>
 
 <p align="center">
@@ -26,7 +26,7 @@ You will land on the main page of our tool. From here you can decide if you wish
 In order to load a project, it must be structured (files names) in a way that our tool does it. This is imperative for the tool to work properly. The structure of a project directory looks like that: 
 
 <p align="center">
-<img src =(media/project_structure.png),title='project_structure'>
+<img src =(media/project_structure.png)>
 </p>
 
 Additionally, you can select which type of video you wish to analyse. The tool provides an option to either:
@@ -35,7 +35,7 @@ Additionally, you can select which type of video you wish to analyse. The tool p
 * analyse noth types of videos at the same time
 
 <p align="center">
-<img src =(media/video_type.png),title='video'>
+<img src =(media/video_type.png)>
 </p>
 
 <p align="center">
@@ -56,7 +56,7 @@ If you decide to start a new project, the first thing to do is to specify where 
 Example:
 
 <p align="center">
-<img src =media/make_project.png,title='project_names'>
+<img src =media/make_project.png>
 </p>
 
 Such parameters will create a project named 'Kiehn_Lab-test-2021-04-14'. In case where you already a project withthat name, the program will ask you if you whish to overwrite already existing project. BE CAREFUL WITH THIS!
@@ -66,7 +66,7 @@ In the next step you need to upload the video which are to be analysed. It is im
 Finally, you have an optional choice do save labeled videos with overlayed markers on the analysed videos. This option serves only visualisation purpose, where you can make sure, that the model predicted correctly. 
 
 <p align="center">
-<img src =(media/save_labeled.png),title=labeled_videos>
+<img src =(media/save_labeled.png)>
 </p>
 
 In order to start the analysis press the 'RUN' button. A window will pop up telling how long the analysis is taking. When it disapears, this means that the analysis is finished. Corresponding labels will be save in a directory called 'Labels'. 
