@@ -75,7 +75,40 @@ In case of loading an existing project, this step is ommited!!!
 
 ## SPEED, ACCELERATION AND CADENCE PROFILES
 
+For the analysis of the bottom videos we provide 3 types of profiling:
+*Speed profile - showing the belt speed, avg.speed and avg. instantenous speed with its error over the whole video
+*Acceleration profile - showing instantenous acceleration and if existing, drag and recovery events over the whole video
+*Cadence profile -  showing cadence and circular plots for selected limb coordination 
 
+We provide multiple optional choices, that are up to the user. Firstly, one has an option to decide, which plots should be included in the final pdf. This choices are represented by the following windows:
+
+<p align="center">
+<img src = 'media/pdf_options.png' title='pdf_options'>
+</p>
+
+
+If you wish to include speed and acceleration profiles in your final pdf you simply must choose option 'Yes' in the corresponding box. This procedure is a bit different for the cadence profiles. You need to select which limb coordination you wish to include. In case of all of them being needed, simply mark 'Select all'. 
+
+Additionally, you have an option to save all the important parameters from the analysis as a csv/Excel table. 
+
+**TREADMILL PARAMETERS**
+
+Regarding belt parameters, you have an option to specify these too. By defualt, we assume that the length of the treadmill is 20 cm however, if that is not the case, you can specify the length. Similar goes for the treadmill speed. By default, the tool assumes the speed from the name of the video file however, if the actuall speed was different, you can specify that too. If you wish to personalise both feature, simply check the corresponding checkbox and set the values in the following windows:
+
+<p align="center">
+<img src = 'media/treadmill_param.png' title='treadmill'>
+</p>
+
+**SPEED PROFILE PARAMETERS**
+
+For the speed profile plot, you can specify the 'noise filter'. This parameter smoothes out the plot and removes big variations, allowing for a good looking plot. By default it is set to 10, which is the value that we propose.
+
+**ACCELERATION PROFILES**
+
+In this part of the analysis you have a choice on the selection of drag and recovery events. You need to choose a maximum time duration  (in seconds) for the program to select steps during which recover/drag event occured. This steps will later on be eliminated from the analysis. The will also be plot on the acceleration profile plot with blue line for  recovery event and red line for drag event. 
+
+
+## STICK PLOTS AND ANGLES ANALYSIS
 
 
 
