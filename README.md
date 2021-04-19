@@ -155,7 +155,10 @@ The main idea behind this analysis is the custom division of available videos, i
 <img src = 'media/groups.png' title='groups'>
 </p>
 
-You can add videos to certain groups by clicking on the corresponding button on the right side of the group's name.  
+You can add videos to certain groups by clicking on the corresponding button on the right side of the group's name. 
+
+**IMPORTANT!!!**
+Selected videos have to be taken out of the project folder. We assume that the location of the videos is within a project structure and by following specific instruction the tool can find coresponding files with the coordinates. 
 
 Finally, you have the possibility to perform statistical analysis between selected groups. For this purpose the tool allows multiple personalised options that you can select from.
 
@@ -165,6 +168,10 @@ Finally, you have the possibility to perform statistical analysis between select
 
 In order to allows for fair comparison we take particular amount of steps sampled from the pull. You can specify the type of the sampling and number of steps. If the selected number is mote then available, the tool will take the maximum amount of steps available. 
 
+**IMPORTANT!!!**
+The selection of all types of sampling is not yet implemented however it will be fixed soon!
+
+
 For the statistical test, the tool provides two of them:
 *Watson-Williams test
 *Modified Rayleigh test
@@ -173,6 +180,18 @@ There is one more additional parameter called 'phi threshold' which is set to 0.
 
 Finally you can select for which limb coordination you want to perform group analysis. 	
 
+
+## RESULTS
+
+All of the produced results are stored with the project structure. The results comprised of:
+*Every plot that the user chose to create during the analysis - stored in the folder called 'allProfiles'
+*Optional csv table for Speed/Acceleration/Cadence profiles - called 'speedProfile.csv' and stored in the main project folder
+*Csv table with combined parameters including bottom and lateral videos (If there are both types of videos for the same animal) - called 'statistics.csv' and stored in the main project folder
+*Txt table with results of statistical testing during group analysis; includes the limb coordination, groups combination, type of test, p-value and significancy - called 'stats.txt' and stored in the main project folder 
+
+<p align="center">
+<img src = 'media/results.png' title='results'>
+</p>
 
 
 

@@ -41,7 +41,8 @@ def Group_profiler(groups,names,stride,n_steps,phi_thr,test):
             groups_final.append(i)
 
     path_labels = '/'.join(groups_final[0][0].split('/')[:-1]) + '/allProfiles/'
-    with open(path_labels + 'stats.txt', 'w') as f:
+    proj_path = '/'.join(groups_final[0][0].split('/')[:-1]) + '/'
+    with open(proj_path + 'stats.txt', 'w') as f:
         print('Limb coordination: \t Pair \t Statistical test \t p-value \t Number of steps \t Belt speed ', file=f)
 
 
@@ -135,7 +136,7 @@ def Group_profiler(groups,names,stride,n_steps,phi_thr,test):
                     sig = 'n.s'
                 string = (locKeys[j] + '\t' + comb[0] + ' vs ' + comb[1] + '\tMod. Rayleigh\tp=%.4f' % (
                     pVal) + ' (' + sig + ')\tN = %d\t' % (N) + '20' + 'cm/s')
-                with open(path_labels + 'stats.txt', 'a') as f:
+                with open(proj_path + 'stats.txt', 'a') as f:
                     print(string, file=f)
             # print(string)
             elif test == 'Watson-Williams test':
@@ -148,7 +149,7 @@ def Group_profiler(groups,names,stride,n_steps,phi_thr,test):
                     sig = 'n.s'
                 string = (locKeys[j] + '\t' + comb[0] + ' vs ' + comb[1] + '\tWatson-Williams\tp=%.4f' % (
                     pVal) + ' (' + sig + ')\tN = %d\t' % (N) + '20' + 'cm/s')
-                with open(path_labels + 'stats.txt', 'a') as f:
+                with open(proj_path + 'stats.txt', 'a') as f:
                     print(string, file=f)
             # print(string)
             else:
@@ -173,7 +174,7 @@ def Group_profiler(groups,names,stride,n_steps,phi_thr,test):
 
                 string2 = (locKeys[j] + '\t' + comb[0] + ' vs ' + comb[1] + '\tWatson-Williams\tp=%.4f' % (
                     pVal) + ' (' + sig + ')\tN = %d\t' % (N) + '20' + 'cm/s')
-                with open(path_labels + 'stats.txt', 'a') as f:
+                with open(proj_path + 'stats.txt', 'a') as f:
                     print(string1 + '\n' + string2, file=f)
 
 
