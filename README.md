@@ -105,20 +105,73 @@ For the speed profile plot, you can specify the 'noise filter'. This parameter s
 
 **ACCELERATION PROFILES**
 
-In this part of the analysis you have a choice on the selection of drag and recovery events. You need to choose a maximum time duration  (in seconds) for the program to select steps during which recover/drag event occured. This steps will later on be eliminated from the analysis. The will also be plot on the acceleration profile plot with blue line for  recovery event and red line for drag event. 
+In this part of the analysis you have a power over the selection of drag and recovery events. You need to choose a maximum time duration  (in seconds) for the program to select steps during which recover/drag event occured. This steps will later on be eliminated from the analysis. The will also be plot on the acceleration profile plot with blue line for  recovery event and red line for drag event. 
 
 
 ## STICK PLOTS AND ANGLES ANALYSIS
 
+In regards to lateral videos analysis, the only 2 options that the user can personalise is a scaling parameter for the stick plots and optional 'temporal synchronisation'.  The following examples show the differences between those options.
 
 
+<p align="center">
+<img src = 'media/stick_plots.png' title='sticks_scaling'>
+</p>
+
+As seen in the above comparison, the higher the scaling parameter the more tightly packed are the sticks in the plots becoming thiner. 
 
 
+<p align="center">
+<img src = 'media/temporal_sync.png' title='temp_sync'>
+</p>
+
+Temporal synchronisation allows for analysis of differences in time of swing and stand phases. 
 
 
+**IMPORTANT!!!**
+TEMPORAL SYNCHRONISATION IS NOT YET AVAILABLE, BUT IT WILL BE FIXED SOON!
 
 
+## LOADING EXISTING PROJECT
 
+The process of working with already existing project is basically the same as when creating a new one. We skip the part in which we perform pose estimation and go straight to analysis of the coordinates. The only difference between loading and starting a project is one line on top of the screen:
+
+<p align="center">
+<img src = 'media/load_path.png' title='proj_path'>
+</p>
+
+In this window you can select where your project is located. Simply find your project directory and select it. Now, the tool knows which coordinates and videos to use and you can continue with the analysis.
+
+## GROUP ANALYSIS
+
+The last part of the analysis that the tool provides, is the group analysis. This feature is only applicable to BOTTOM VIEW videos, as it groups the results of cadence profiles and checks if their differences are significant. 
+
+<p align="center">
+<img src = 'media/group_analysis.png' title='group_analysis'>
+</p>
+
+The main idea behind this analysis is the custom division of available videos, into maximum of 4 groups. The selection and naming of the groups is ultimately up to the user. As a result, the tool, creates a circular plot for each of the selected limb coordinations. Created circular plot included a mean vector for each of the created groups.   
+
+<p align="center">
+<img src = 'media/groups.png' title='groups'>
+</p>
+
+You can add videos to certain groups by clicking on the corresponding button on the right side of the group's name.  
+
+Finally, you have the possibility to perform statistical analysis between selected groups. For this purpose the tool allows multiple personalised options that you can select from.
+
+<p align="center">
+<img src = 'media/group_options.png' title='group_options'>
+</p>
+
+In order to allows for fair comparison we take particular amount of steps sampled from the pull. You can specify the type of the sampling and number of steps. If the selected number is mote then available, the tool will take the maximum amount of steps available. 
+
+For the statistical test, the tool provides two of them:
+*Watson-Williams test
+*Modified Rayleigh test
+
+There is one more additional parameter called 'phi threshold' which is set to 0.5. this value describes how much do want the angles between the limbs to differ and not be eliminated from the analysis. We introduced this parameter as the markers could rarely be misplaced by the model during pose estimation. This is a quick fix to overcome such issue.
+
+Finally you can select for which limb coordination you want to perform group analysis. 	
 
 
 
