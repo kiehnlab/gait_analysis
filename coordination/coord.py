@@ -352,7 +352,7 @@ def cadencePlot(movDur, lStride, rStride, fig, gs,row,col,circPlot=True):
 
 def measureCycles(stride):
     peaks,_ = find_peaks(stride)
-    thresh = np.diff(peaks).mean()/2
+    thresh = np.diff(peaks).mean()
     peaks,_ = find_peaks(stride,distance=thresh)
     return len(peaks),peaks
 
