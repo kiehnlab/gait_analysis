@@ -5,7 +5,7 @@ date: Oct26
 multianimalproject:
 
     # Project path (change when moving around)
-project_path: /home/janek/gait_analysis/lateral_analysis
+project_path: /home/student/Jan/gait_analysis/lateral_analysis
 
     # Annotation data set configuration (and individual video cropping parameters)
 video_sets:

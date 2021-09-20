@@ -14,7 +14,7 @@ from gait_analysis.coordination.plotter import *
 from gait_analysis.Accel_plotter import *
 from gait_analysis.coordination.lateral import *
 from gait_analysis.coordination.sticks import *
-
+import pdb
 
 class loaded_lateral_profiler(wx.Panel):
     def __init__(self, parent, gui_size):
