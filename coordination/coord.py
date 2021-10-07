@@ -353,7 +353,7 @@ def cadencePlot(movDur, lStride, rStride, fig, gs,row,col,circPlot=True):
 def measureCycles(stride):
     peaks,_ = find_peaks(stride)
     thresh = np.diff(peaks).mean()
-    peaks,_ = find_peaks(stride,distance=thresh)
+    peaks,_ = find_peaks(stride,distance=thresh*0.75)
     return len(peaks),peaks
 
 def bodyPosCoord(ipFile,speedMean,avgSpeed,speedSmFactor, meta):
@@ -426,7 +426,7 @@ def bodyPosCoord(ipFile,speedMean,avgSpeed,speedSmFactor, meta):
     hRStride = np.interp(xAxisNew, xAxis, hRStride)
     fRStride = np.interp(xAxisNew, xAxis, fRStride)
 
-#    pdb.set_trace()
+    #pdb.set_trace()
     # Count the number of zero crossings for the entire duration
     # Obtain cadence steps/second 
     hLCadence = (measureCycles(hLStride))[0]/movDur

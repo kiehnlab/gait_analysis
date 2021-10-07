@@ -213,9 +213,21 @@ def locomotionProfiler(data_path,tThr,speedSmFactor,grid_number,combination,belt
         aAxis = np.linspace(0, movDur, accMean.shape[0])
         # pdb.set_trace()
         plt.clf()
-        fig = plt.figure(figsize=(30,30))
-        gs = GridSpec(grid_number,2,figure=fig)
-        k = 0
+        fig = plt.figure(figsize=(30,50))
+        gs = GridSpec(grid_number+2,2,figure=fig)
+        leg = ['LH','RH','LF','RF']
+        col = True
+        for i in range(4):
+            ax = fig.add_subplot(gs[i//2,col]) 
+            col = ~col
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+            peaks = measureCycles(stride[i])[1]
+            xAxis = np.linspace(0,movDur,len(stride[i]))
+            plt.plot(xAxis,stride[i])
+            plt.plot(xAxis[peaks],stride[i][peaks],'o')
+            plt.title(leg[i]+', N=%d'%(len(peaks)))
+        k = 2
         if plot_speed:
             fig = plotSpeedProfile(vid, meta, beltSpeed, avgSpeed, speedMean, speedStd, fig, gs,k)
             k += 1
