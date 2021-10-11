@@ -353,7 +353,9 @@ def cadencePlot(movDur, lStride, rStride, fig, gs,row,col,circPlot=True):
 def measureCycles(stride):
     peaks,_ = find_peaks(stride)
     thresh = np.diff(peaks).mean()
-    peaks,_ = find_peaks(stride,distance=thresh*0.75)
+    peak_height = (stride[peaks]).mean()
+    peaks,_ = find_peaks(stride, height=0.75*peak_height,
+            distance=thresh*0.75,prominence=0.95)
     return len(peaks),peaks
 
 def bodyPosCoord(ipFile,speedMean,avgSpeed,speedSmFactor, meta):
@@ -421,10 +423,10 @@ def bodyPosCoord(ipFile,speedMean,avgSpeed,speedSmFactor, meta):
     xAxisNew = np.linspace(0,movDur,INTERP*len(hLStride))
 
     # Interpolate for better zero crossing detections
-    hLStride = np.interp(xAxisNew, xAxis, hLStride)
-    fLStride = np.interp(xAxisNew, xAxis, fLStride)
-    hRStride = np.interp(xAxisNew, xAxis, hRStride)
-    fRStride = np.interp(xAxisNew, xAxis, fRStride)
+    hLStride = np.interp(xAxisNew, xAxis, hLStride) - hLStride.min()
+    fLStride = np.interp(xAxisNew, xAxis, fLStride) - fLStride.min()
+    hRStride = np.interp(xAxisNew, xAxis, hRStride) - hRStride.min()
+    fRStride = np.interp(xAxisNew, xAxis, fRStride) - fRStride.min()
 
     #pdb.set_trace()
     # Count the number of zero crossings for the entire duration
