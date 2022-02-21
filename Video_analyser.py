@@ -94,21 +94,36 @@ class Video_analyser(wx.Panel):
         self.project_name = wx.TextCtrl(self)
         sizer.Add(self.project_name,pos=(4,1),span=(1,13),flag=wx.EXPAND)
 
+        ### Add option to choose DLC model
+        self.model_name_txt = wx.StaticText(self,label='Choose DLC model for inference (OPTIONAL):')
+        sizer.Add(self.model_name_txt,pos=(5,0),flag =wx.BOTTOM | wx.EXPAND, border = 5)
+
+        self.model_name = wx.DirPickerCtrl(
+            self,
+            path='',
+            style=wx.DIRP_USE_TEXTCTRL | wx.DIRP_DIR_MUST_EXIST,
+            message='Choose the DLC model for inference (.meta extension)'
+        )
+        sizer.Add(self.model_name, pos=(5, 1), span=(1,13), flag=wx.BOTTOM | wx.EXPAND, border=5)
 
 
+#        self.model_name_txt = wx.StaticText(self,label='DLC model for inference:')
+#        sizer.Add(self.model_name_txt,pos=(5,0),flag=wx.TOP | wx.EXPAND)
 
+#        self.model_name = wx.TextCtrl(self)
+#        sizer.Add(self.model_name,pos=(6,1),span=(1,13),flag=wx.EXPAND)
 
         self.create_project = wx.Button(self,label='Create project!')
         #self.create_project.Enable(False)
-        sizer.Add(self.create_project,pos=(5,13),flag=wx.BOTTOM, border =5)
+        sizer.Add(self.create_project,pos=(7,13),flag=wx.BOTTOM, border =5)
         self.create_project.Bind(wx.EVT_BUTTON,self.create_new_project)
 
 
         self.videos = wx.StaticText(self,label='Please select videos:')
-        sizer.Add(self.videos, pos=(7,0), flag = wx.TOP | wx.EXPAND, border = 5)
+        sizer.Add(self.videos, pos=(8,0), flag = wx.TOP | wx.EXPAND, border = 5)
 
         self.sel_vids = wx.Button(self,label='Load Videos')
-        sizer.Add(self.sel_vids, pos=(7,1),span=(1,13), flag =wx.TOP | wx.EXPAND, border=5)
+        sizer.Add(self.sel_vids, pos=(8,1),span=(1,13), flag =wx.TOP | wx.EXPAND, border=5)
         self.sel_vids.Bind(wx.EVT_BUTTON, self.select_videos)
 
 
