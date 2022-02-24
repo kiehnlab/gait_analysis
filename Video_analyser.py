@@ -19,16 +19,23 @@ from gait_analysis.Lateral_analysis import lateral_panel
 from gait_analysis.Group_analysis import Group_plotter
 
 class analysis_Thread(threading.Thread):
-    def __init__(self, threadID, name,analysis, filelist1, labeled_videos):
+    def __init__(self, threadID, name,analysis, filelist1, labeled_videos,custom_model):
         threading.Thread.__init__(self)
         self.threadID = threadID
         self.name = name
-        if analysis == 'Bottom view':
-            self.config = gait_analysis.__path__[0] + '/config.yaml'
-        elif analysis == 'Lateral view':
-            self.config = gait_analysis.__path__[0] + '/lateral_analysis/config.yaml'
+#        pdb.set_trace()
+        if custom_model == '':
+            if analysis == 'Bottom view':
+                self.config = gait_analysis.__path__[0] + '/config.yaml'
+            elif analysis == 'Lateral view':
+                self.config = gait_analysis.__path__[0] + '/lateral_analysis/config.yaml'
+        else:
+            self.config = custom_model
+        
+
         self.filelist1 = filelist1
         self.labeled_videos = labeled_videos
+
     def run(self):
         print ("Starting " + self.name)
         import deeplabcut
@@ -95,16 +102,17 @@ class Video_analyser(wx.Panel):
         sizer.Add(self.project_name,pos=(4,1),span=(1,13),flag=wx.EXPAND)
 
         ### Add option to choose DLC model
-        self.model_name_txt = wx.StaticText(self,label='Choose DLC model for inference (OPTIONAL):')
-        sizer.Add(self.model_name_txt,pos=(5,0),flag =wx.BOTTOM | wx.EXPAND, border = 5)
+        self.custom_model_txt = wx.StaticText(self,label='Choose custom DLC model for inference (OPTIONAL):')
+        sizer.Add(self.custom_model_txt,pos=(5,0),flag =wx.BOTTOM | wx.EXPAND, border = 5)
 
-        self.model_name = wx.DirPickerCtrl(
+        self.custom_model = wx.FilePickerCtrl(
             self,
             path='',
             style=wx.DIRP_USE_TEXTCTRL | wx.DIRP_DIR_MUST_EXIST,
-            message='Choose the DLC model for inference (.meta extension)'
+            wildcard='*.yaml',
+            message='Choose the custom DLC model for inference (config.yaml file)'
         )
-        sizer.Add(self.model_name, pos=(5, 1), span=(1,13), flag=wx.BOTTOM | wx.EXPAND, border=5)
+        sizer.Add(self.custom_model, pos=(5, 1), span=(1,13), flag=wx.BOTTOM | wx.EXPAND, border=5)
 
 
 #        self.model_name_txt = wx.StaticText(self,label='DLC model for inference:')
@@ -117,7 +125,6 @@ class Video_analyser(wx.Panel):
         #self.create_project.Enable(False)
         sizer.Add(self.create_project,pos=(7,13),flag=wx.BOTTOM, border =5)
         self.create_project.Bind(wx.EVT_BUTTON,self.create_new_project)
-
 
         self.videos = wx.StaticText(self,label='Please select videos:')
         sizer.Add(self.videos, pos=(8,0), flag = wx.TOP | wx.EXPAND, border = 5)
@@ -220,8 +227,9 @@ class Video_analyser(wx.Panel):
             dlg = wx.MessageDialog(self,message='Upload videos!',style=wx.ICON_ERROR | wx.OK)
             dlg.ShowModal()
             return
-
-        t1 = analysis_Thread(1, "Video analysis",self.analysis_type,self.filelist,self.save_lab_videos.GetStringSelection())
+        t1 = analysis_Thread(1, "Video analysis",self.analysis_type,self.filelist,
+                self.save_lab_videos.GetStringSelection(),
+                self.custom_model.GetPath())
         t1.start()
         dlg = wx.ProgressDialog('', 'Please wait..',
                                 style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME | wx.PD_CAN_ABORT | wx.STAY_ON_TOP)

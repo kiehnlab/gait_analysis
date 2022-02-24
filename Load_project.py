@@ -294,10 +294,18 @@ class loaded_S_C_profiler(wx.Panel):
         df = pd.DataFrame(columns=df_cols, index=range(N_bottom))
         df[df_cols[1:]] = df[df_cols[1:]].apply(pd.to_numeric)
 
-        df = locomotionProfiler(data_path=self.load_dir.GetPath()+'/labels',tThr=self.tThresh.GetValue(),speedSmFactor=self.SpeedSmFactor.GetValue(),grid_number = n_grid,
-                           combination=self.combination,belt=belt_speed,df=df,saveFlag=True, plotFlag=False, log=True,plot_speed=save_speed,plot_acc = save_acc)
-
-
+        df = locomotionProfiler(data_path=self.load_dir.GetPath()+'/labels',
+                tThr=self.tThresh.GetValue(),
+                speedSmFactor=self.SpeedSmFactor.GetValue(),
+                grid_number = n_grid,
+                combination=self.combination,
+                belt=belt_speed,
+                df=df,
+                saveFlag=True, 
+                plotFlag=False, 
+                log=True,
+                plot_speed=save_speed,
+                plot_acc = save_acc)
         dlg = wx.MessageDialog(self, message='Plots are created! Continue to group analysis!', style=wx.OK)
         dlg.ShowModal()
         page3 = Group_plotter(self.parent, self.gui_size)
