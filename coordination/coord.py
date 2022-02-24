@@ -361,6 +361,8 @@ def measureCycles(stride):
 def bodyPosCoord(ipFile,speedMean,avgSpeed,speedSmFactor, meta):
 
 #    model = ipFile.split('cms')[1].split('.')[0]
+    model = data.keys()[0][0]
+
     data = pd.read_hdf(ipFile)
     speedSmFactor = int(speedSmFactor)
     fL = np.asarray(data[model][mrkr[3]]['x'])
@@ -722,7 +724,9 @@ def plotCadence(vid,hCadence,fCadence,avgSpeed,xAxis,
 
 def hindCoord(ipFile,vid,meta,speedMean,avgSpeed,fps):
 
-    model = ipFile.split('cms')[1].split('.')[0]
+#    model = ipFile.split('cms')[1].split('.')[0]
+    model = data.keys()[0][0]
+
     data = pd.read_hdf(ipFile)
     
     hL = np.asarray(data[model][mrkr[4]]['x'])* meta['xPixW']
@@ -788,7 +792,9 @@ def hindCoord(ipFile,vid,meta,speedMean,avgSpeed,fps):
 
 def estimateCoord(ipFile,vid,meta,speedMean,avgSpeed):
 
-    model = ipFile.split('cms')[1].split('.')[0]
+#    model = ipFile.split('cms')[1].split('.')[0]
+    model = data.keys()[0][0]
+
     data = pd.read_hdf(ipFile)
     
     fL = np.asarray(data[model][mrkr[3]]['x'])

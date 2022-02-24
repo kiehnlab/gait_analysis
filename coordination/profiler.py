@@ -44,6 +44,7 @@ def estimateSpeed(ipFile,beltSpeed,meta,vid,speedSmFactor,plotSpeed=True):
 
 #    model = ipFile.split('cms')[1].split('.')[0]
     data = pd.read_hdf(ipFile)
+    model = data.keys()[0][0]
     time = 1/meta['fps'] # interval between successive frames in s
     speedAll = []
     speedSmFactor = int(speedSmFactor)
