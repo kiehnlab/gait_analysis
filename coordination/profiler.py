@@ -62,7 +62,7 @@ def estimateSpeed(ipFile,beltSpeed,meta,vid,speedSmFactor,plotSpeed=True):
         speedAll.append(speed)
 
     speedAll = np.stack(speedAll)
-
+#    pdb.set_trace()
     speedMean = speedAll.mean(0)
     speedMean = np.convolve(speedMean, np.ones((speedSmFactor,))/speedSmFactor, mode='valid')
     avgSpeed = speedMean[::int(meta['fps']/speedSmFactor)].mean()

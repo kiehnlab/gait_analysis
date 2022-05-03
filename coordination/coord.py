@@ -361,9 +361,10 @@ def measureCycles(stride):
 def bodyPosCoord(ipFile,speedMean,avgSpeed,speedSmFactor, meta):
 
 #    model = ipFile.split('cms')[1].split('.')[0]
-    model = data.keys()[0][0]
 
     data = pd.read_hdf(ipFile)
+
+    model = data.keys()[0][0]
     speedSmFactor = int(speedSmFactor)
     fL = np.asarray(data[model][mrkr[3]]['x'])
     fL = np.convolve(fL, np.ones((smFactor,))/smFactor, mode='valid')
@@ -410,7 +411,7 @@ def bodyPosCoord(ipFile,speedMean,avgSpeed,speedSmFactor, meta):
     
     # compute avg speed based on non-dragging portions
     avgSpeed = speedMean[idx][::int(meta['fps']/speedSmFactor)].mean()
-
+#    avgSpeed = speedMean.mean()
     hLMean = iqrMean(hLStride)
     hRMean = iqrMean(hRStride)
     fLMean = iqrMean(fLStride)
@@ -725,10 +726,10 @@ def plotCadence(vid,hCadence,fCadence,avgSpeed,xAxis,
 def hindCoord(ipFile,vid,meta,speedMean,avgSpeed,fps):
 
 #    model = ipFile.split('cms')[1].split('.')[0]
-    model = data.keys()[0][0]
 
     data = pd.read_hdf(ipFile)
     
+    model = data.keys()[0][0]
     hL = np.asarray(data[model][mrkr[4]]['x'])* meta['xPixW']
     hL = np.convolve(hL, np.ones((smFactor,))/smFactor, mode='valid')
     hR = np.asarray(data[model][mrkr[6]]['x']) * meta['xPixW']
@@ -793,10 +794,10 @@ def hindCoord(ipFile,vid,meta,speedMean,avgSpeed,fps):
 def estimateCoord(ipFile,vid,meta,speedMean,avgSpeed):
 
 #    model = ipFile.split('cms')[1].split('.')[0]
-    model = data.keys()[0][0]
 
     data = pd.read_hdf(ipFile)
     
+    model = data.keys()[0][0]
     fL = np.asarray(data[model][mrkr[3]]['x'])
     fL = np.convolve(fL, np.ones((smFactor,))/smFactor, mode='valid')
     fR = np.asarray(data[model][mrkr[5]]['x'])

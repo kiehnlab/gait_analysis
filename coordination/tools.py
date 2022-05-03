@@ -33,13 +33,13 @@ def processDict(dFiles,phiThresh=0):
 def videoMetadata(vid):
     meta = {}
     time_str = pex.information(vid)['Composite:Duration']
-
+#    pdb.set_trace()
     if ' s' in time_str:
         meta['dur'] = np.float(time_str.replace(' s',''))
     else:
         ftr = [3600,60,1]
-        meta['dur'] = np.float(sum([a*b for a,b in zip(ftr, map(int,time_str.split(':')))]))/5
-    meta['fps'] = np.int(pex.information(vid)['RIFF:VideoFrameRate'])*5
+        meta['dur'] = np.float(sum([a*b for a,b in zip(ftr, map(int,time_str.split(':')))]))
+    meta['fps'] = np.int(pex.information(vid)['RIFF:VideoFrameRate'])
     meta['nFrame'] = nFrame = np.int(pex.information(vid)['RIFF:VideoFrameCount'])
     meta['imW']  = np.int(pex.information(vid)['RIFF:ImageWidth']) 
     meta['imH'] = np.int(pex.information(vid)['RIFF:ImageHeight'])
