@@ -2,7 +2,7 @@
 
 #model name
 model = 'DLC_resnet50_MultipleMarkersNov15shuffle1_4500'
-model_lateral = 'DLC_resnet_50_lateral_analysisOct26shuffle1_100000'
+model_lateral = 'DLC_resnet50_lateral_analysisOct26shuffle1_100000'
 
 # Marker ids used in DeepLabCut
 mrkr = ['snout', 'snoutL', 'snoutR', 'foreL', 'foreR','hindL', 

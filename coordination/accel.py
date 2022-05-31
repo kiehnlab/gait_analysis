@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import glob
-import pyexifinfo as pex
+#import pyexifinfo as pex
 import pdb
 import warnings
 warnings.filterwarnings("ignore")

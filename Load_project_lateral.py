@@ -88,6 +88,7 @@ class loaded_lateral_profiler(wx.Panel):
         N = len(glob.glob(self.load_dir.GetPath() + '/*.avi'))
         df = pd.DataFrame(columns=df_cols, index=range(N))
         df[df_cols[1:]] = df[df_cols[1:]].apply(pd.to_numeric)
+        #pdb.set_trace()
         df = lateral_profiler(self.load_dir.GetPath(), 2, df)  # Measure joint angles, make stick figures
         df.to_csv(self.load_dir.GetPath() + '/statistics.csv', index=False, float_format='%.4f', na_rep='0')
         dlg = wx.MessageDialog(self,message='Plots created!',style=wx.OK)

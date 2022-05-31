@@ -3,9 +3,10 @@ Task: MultipleMarkers
 scorer: Raghav
 date: Nov15
 multianimalproject:
+identity:
 
     # Project path (change when moving around)
-project_path: /home/student/Jan/gait_analysis
+project_path: /home/student/gait_analysis
 
     # Annotation data set configuration (and individual video cropping parameters)
 video_sets:
@@ -47,6 +48,8 @@ bodyparts:
 - torsoL
 - torsoR
 - tail
+
+    # Fraction of video to start/stop when extracting frames for labeling/refinement
 start: 0
 stop: 1
 numframes2pick: 20
@@ -74,7 +77,6 @@ batch_size: 8
 
     # Cropping Parameters (for analysis and outlier frame detection)
 cropping: false
-croppedtraining:
     #if cropping is true for analysis, then set the values here:
 x1: 0
 x2: 640
@@ -86,5 +88,6 @@ corner2move2:
 - 50
 - 50
 move2corner: true
+croppedtraining:
 resnet:
 create_video_with_all_detections: Yes
