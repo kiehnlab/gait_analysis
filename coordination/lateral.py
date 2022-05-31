@@ -137,7 +137,7 @@ def lateral_profiler(data_dir,scale,df):
 #           df[joints[i]+'_ang'][df.Name in fName] = dAng[i]
             # print(df.at[df.name == fName[9:-4],joints[i]+'_ang'])
             #df.at[df.name == (fName.split('.')[0]),joints[i]+'_ang'] = dAng[i]
-            df[df.name == (fName.split('.')[0])][joints[i]+'_ang'] = dAng[i]
+            df.loc[df.name == (fName.split('.')[0]),joints[i]+'_ang'] = dAng[i]
         ### Save cycle_angles
         np.save(dest+fName.replace('.avi','.npy'),cyc_angles)
         makeStickFigure(xval,yval,dist,angles,\
