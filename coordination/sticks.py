@@ -34,7 +34,7 @@ def makeStickFigure(x,y,dist,angles,dur,\
     ax = fig.add_subplot(gs[1,:3])
 #    pdb.set_trace()
     for i in range(len(joints)):
-        sns.lineplot(t,angles[i],label=joints[i])
+        sns.lineplot(x=t,y=angles[i],label=joints[i])
 #    plt.plot(t[peaks],angles[-1][peaks],'o')
     plt.ylim([-5,185])
     plt.xlim([-0.1,dur+1])
